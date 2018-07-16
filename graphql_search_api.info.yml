@@ -1,0 +1,7 @@
+name: Graphql search api
+type: module
+description: A collection of search api integration points for graphql
+core: 8.x
+package: Search
+dependencies:
+  - graphql
