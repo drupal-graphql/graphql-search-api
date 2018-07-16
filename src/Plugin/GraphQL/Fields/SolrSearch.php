@@ -30,8 +30,27 @@ class SolrSearch extends FieldPluginBase {
    * {@inheritdoc}
    */
   protected function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-    $array = [1, 2];
-    foreach ($array as $doc) {
+
+    // this should also come with the query
+    $index = \Drupal\search_api\Entity\Index::load('default_solr_index');
+
+    $query = $index->query();
+
+    // Set additional conditions.
+    $query->addCondition('status', 1);
+
+    try {
+      // Execute the search.
+      $results = $query->execute();
+
+      $ids = array_keys($results->getResultItems());
+      \Drupal::logger('graphql_search_api')->notice(implode(', ', $ids));
+    }
+    catch (\Exception $exception) {
+      // Handle error, check exception type -> SearchApiException ?
+      $ids = [];
+    }
+    foreach ($ids as $doc) {
       yield [
         'type' => 'Doc',
         'docId' => $doc,

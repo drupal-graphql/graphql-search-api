@@ -13,7 +13,7 @@ use GraphQL\Type\Definition\ResolveInfo;
  *   id = "doc_id",
  *   secure = true,
  *   name = "docId",
- *   type = "Int",
+ *   type = "String",
  *   parents = {"Doc"}
  * )
  */
