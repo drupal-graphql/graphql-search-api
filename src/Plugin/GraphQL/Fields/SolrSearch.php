@@ -54,7 +54,7 @@ class SolrSearch extends FieldPluginBase {
     foreach ($ids as $doc) {
       yield [
         'type' => 'Doc',
-        'docId' => $doc,
+        'field1' => $doc,
       ];
     }
   }
