@@ -43,19 +43,28 @@ class SolrSearch extends FieldPluginBase {
       // Execute the search.
       $results = $query->execute();
 
-      $ids = array_keys($results->getResultItems());
-      \Drupal::logger('graphql_search_api')->notice(implode(', ', $ids));
+      $result_items = $results->getResultItems();
     }
     catch (\Exception $exception) {
       // Handle error, check exception type -> SearchApiException ?
       \Drupal::logger('graphql_search_api')->error($exception);
-      $ids = [];
     }
-    foreach ($ids as $doc) {
-      yield [
-        'type' => 'Doc',
-        'field1' => $doc,
-      ];
+    foreach ($result_items as $id => &$item) {
+      $return = [];
+      $return['type'] = 'Doc';
+      foreach ($item->getFields() as $field_id => $field) {
+        if (method_exists($field->getValues()[0], 'getText')) {
+          $value = $field->getValues()[0]->getText();
+        }
+        else {
+          if (!empty($field->getValues()[0])) {
+            $value = $field->getValues()[0];
+          }
+        }
+        $return[$field_id] = $value;
+      }
+      $return['type'] = 'Doc';
+      yield $return;
     }
   }
 }

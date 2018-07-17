@@ -47,12 +47,33 @@ class SolrField extends DeriverBase implements ContainerDeriverInterface {
    * {@inheritdoc}
    */
   public function getDerivativeDefinitions($base_plugin_definition) {
-    $nodes = $this->nodeStorage->loadByProperties(['type' => 'job_per_template']);
-    foreach ($nodes as $node) {
-      $this->derivatives['field' . $node->id()] = $base_plugin_definition;
-      $this->derivatives['field' . $node->id()]['id'] = 'field_' . $node->id();
-      $this->derivatives['field' . $node->id()]['name'] = 'field' . $node->id();
-      $this->derivatives['field' . $node->id()]['type'] = 'String';
+    $index = \Drupal\search_api\Entity\Index::load('default_solr_index');
+    foreach ($index->getFields() as $field_id => $field) {
+      $this->derivatives[$field_id] = $base_plugin_definition;
+      $this->derivatives[$field_id]['id'] = $field_id;
+      $this->derivatives[$field_id]['name'] = $field_id;
+      $type = $field->getType();
+
+      switch ($type) {
+        case  'text':
+          $this->derivatives[$field_id]['type'] = 'String';
+          break;
+        case  'string':
+          $this->derivatives[$field_id]['type'] = 'String';
+          break;
+        case  'boolean':
+          $this->derivatives[$field_id]['type'] = 'Boolean';
+          break;
+        case  'integer':
+          $this->derivatives[$field_id]['type'] = 'Int';
+          break;
+        case  'date':
+          $this->derivatives[$field_id]['type'] = 'Date';
+          break;
+        default:
+          $this->derivatives[$field_id]['type'] = 'String';
+          break;
+      }
     }
     return $this->derivatives;
   }
