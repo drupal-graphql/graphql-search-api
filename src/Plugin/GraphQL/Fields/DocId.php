@@ -14,7 +14,7 @@ use GraphQL\Type\Definition\ResolveInfo;
  *   secure = true,
  *   name = "docId",
  *   type = "String",
- *   parents = {"Doc"}
+ *   parents = {"SolrDoc"}
  * )
  */
 class DocId extends FieldPluginBase {

@@ -12,7 +12,7 @@ use GraphQL\Type\Definition\ResolveInfo;
  * @GraphQLType(
  *   id = "doc",
  *   name = "Doc",
- *   interfaces = {"Doc"},
+ *   interfaces = {"SolrDoc"},
  * )
  */
 class Doc extends TypePluginBase {

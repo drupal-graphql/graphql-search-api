@@ -48,6 +48,7 @@ class SolrSearch extends FieldPluginBase {
     }
     catch (\Exception $exception) {
       // Handle error, check exception type -> SearchApiException ?
+      \Drupal::logger('graphql_search_api')->error($exception);
       $ids = [];
     }
     foreach ($ids as $doc) {
