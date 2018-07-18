@@ -51,17 +51,28 @@ class SolrSearch extends FieldPluginBase {
     }
     foreach ($result_items as $id => &$item) {
       $return = [];
-      $return['type'] = 'Doc';
       foreach ($item->getFields() as $field_id => $field) {
+        $value = null;
         if (!empty($field->getValues()[0]) && method_exists($field->getValues()[0], 'getText')) {
           $value = $field->getValues()[0]->getText();
         }
         else {
-          if (!empty($field->getValues()[0])) {
-            $value = $field->getValues()[0];
+          if (!empty($field->getValues()) && (in_array($field_id, [
+              'job_ocupational_fields_name',
+              'field_job_ocupational_fields',
+              'job_employment_type_name',
+            ]))) {
+            $value = $field->getValues();
+          }
+          else {
+            if (!empty($field->getValues()[0])) {
+              $value = $field->getValues()[0];
+            }
           }
         }
-        $return[$field_id] = $value;
+        if (!empty($value)) {
+          $return[$field_id] = $value;
+        }
       }
       $return['type'] = 'Doc';
       yield $return;

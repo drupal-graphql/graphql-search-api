@@ -59,7 +59,15 @@ class SolrField extends DeriverBase implements ContainerDeriverInterface {
           $this->derivatives[$field_id]['type'] = 'String';
           break;
         case  'string':
-          $this->derivatives[$field_id]['type'] = 'String';
+          if ($field_id == 'job_ocupational_fields_name'
+            || $field_id == 'field_job_ocupational_fields'
+            || $field_id == 'job_employment_type_name'
+          ) {
+            $this->derivatives[$field_id]['type'] = '[String]';
+          }
+          else {
+            $this->derivatives[$field_id]['type'] = 'String';
+          }
           break;
         case  'boolean':
           $this->derivatives[$field_id]['type'] = 'Boolean';
