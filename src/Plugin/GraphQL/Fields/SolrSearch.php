@@ -53,7 +53,7 @@ class SolrSearch extends FieldPluginBase {
       $return = [];
       $return['type'] = 'Doc';
       foreach ($item->getFields() as $field_id => $field) {
-        if (method_exists($field->getValues()[0], 'getText')) {
+        if (!empty($field->getValues()[0]) && method_exists($field->getValues()[0], 'getText')) {
           $value = $field->getValues()[0]->getText();
         }
         else {

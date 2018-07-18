@@ -68,7 +68,7 @@ class SolrField extends DeriverBase implements ContainerDeriverInterface {
           $this->derivatives[$field_id]['type'] = 'Int';
           break;
         case  'date':
-          $this->derivatives[$field_id]['type'] = 'Date';
+          $this->derivatives[$field_id]['type'] = 'Timestamp';
           break;
         default:
           $this->derivatives[$field_id]['type'] = 'String';
