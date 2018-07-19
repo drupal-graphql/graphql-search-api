@@ -51,8 +51,9 @@ class SolrSearch extends FieldPluginBase {
       $return = [];
       foreach ($item->getFields() as $field_id => $field) {
         $value = NULL;
-        if (!empty($field->getValues()[0]) && method_exists($field->getValues()[0], 'getText')) {
-          $value = $field->getValues()[0]->getText();
+        $field_values = $field->getValues();
+        if (!empty($field_values[0]) && method_exists($field_values[0], 'getText')) {
+          $value = $field_values[0]->getText();
         }
         else {
           $datasource_id = explode(':', $field->getDatasourceId())[1];
@@ -62,11 +63,11 @@ class SolrSearch extends FieldPluginBase {
             ->getStorage('field_storage_config')
             ->load($datasource_id . '.' . $field_name_original);
           if (isset($field_storage_config) && $field_storage_config->getCardinality() == FieldStorageConfigInterface::CARDINALITY_UNLIMITED) {
-            $value = $field->getValues();
+            $value = $field_values;
           }
           else {
-            if (!empty($field->getValues()[0])) {
-              $value = $field->getValues()[0];
+            if (!empty($field_values[0])) {
+              $value = $field_values[0];
             }
           }
         }
