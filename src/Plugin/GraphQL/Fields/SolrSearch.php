@@ -2,11 +2,10 @@
 
 namespace Drupal\graphql_search_api\Plugin\GraphQL\Fields;
 
-use Drupal\graphql_search_api\Plugin\GraphQL\Types\Doc;
-
 use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
-use GraphQL\Type\Definition\ResolveInfo;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
+use Drupal\field\FieldStorageConfigInterface;
+use GraphQL\Type\Definition\ResolveInfo;
 
 /**
  * A simple field that wraps a search api solr query.
@@ -42,7 +41,6 @@ class SolrSearch extends FieldPluginBase {
     try {
       // Execute the search.
       $results = $query->execute();
-
       $result_items = $results->getResultItems();
     }
     catch (\Exception $exception) {
@@ -52,16 +50,18 @@ class SolrSearch extends FieldPluginBase {
     foreach ($result_items as $id => &$item) {
       $return = [];
       foreach ($item->getFields() as $field_id => $field) {
-        $value = null;
+        $value = NULL;
         if (!empty($field->getValues()[0]) && method_exists($field->getValues()[0], 'getText')) {
           $value = $field->getValues()[0]->getText();
         }
         else {
-          if (!empty($field->getValues()) && (in_array($field_id, [
-              'job_ocupational_fields_name',
-              'field_job_ocupational_fields',
-              'job_employment_type_name',
-            ]))) {
+          $datasource_id = explode(':', $field->getDatasourceId())[1];
+          $property_path = $field->getPropertyPath();
+          $field_name_original = explode(':', $property_path)[0];
+          $field_storage_config = \Drupal::entityTypeManager()
+            ->getStorage('field_storage_config')
+            ->load($datasource_id . '.' . $field_name_original);
+          if (isset($field_storage_config) && $field_storage_config->getCardinality() == FieldStorageConfigInterface::CARDINALITY_UNLIMITED) {
             $value = $field->getValues();
           }
           else {
