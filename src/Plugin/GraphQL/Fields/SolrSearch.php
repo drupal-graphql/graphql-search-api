@@ -56,12 +56,14 @@ class SolrSearch extends FieldPluginBase {
           $value = $field_values[0]->getText();
         }
         else {
-          $datasource_id = explode(':', $field->getDatasourceId())[1];
-          $property_path = $field->getPropertyPath();
-          $field_name_original = explode(':', $property_path)[0];
-          $field_storage_config = \Drupal::entityTypeManager()
-            ->getStorage('field_storage_config')
-            ->load($datasource_id . '.' . $field_name_original);
+          if (!empty($field->getDatasourceId()[1])) {
+            $datasource_id = explode(':', $field->getDatasourceId())[1];
+            $property_path = $field->getPropertyPath();
+            $field_name_original = explode(':', $property_path)[0];
+            $field_storage_config = \Drupal::entityTypeManager()
+              ->getStorage('field_storage_config')
+              ->load($datasource_id . '.' . $field_name_original);
+          }
           if (isset($field_storage_config) && $field_storage_config->getCardinality() == FieldStorageConfigInterface::CARDINALITY_UNLIMITED) {
             $value = $field_values;
           }
