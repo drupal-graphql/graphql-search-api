@@ -10,6 +10,7 @@ namespace Drupal\graphql_search_api\Plugin\GraphQL\Derivative;
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
+use Drupal\field\FieldStorageConfigInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -54,20 +55,25 @@ class SolrField extends DeriverBase implements ContainerDeriverInterface {
       $this->derivatives[$field_id]['name'] = $field_id;
       $type = $field->getType();
 
+      $datasource_id = explode(':', $field->getDatasourceId())[1];
+      $property_path = $field->getPropertyPath();
+      $field_name_original = explode(':', $property_path)[0];
+      $field_storage_config = \Drupal::entityTypeManager()
+        ->getStorage('field_storage_config')
+        ->load($datasource_id . '.' . $field_name_original);
+      if (isset($field_storage_config) && $field_storage_config->getCardinality() == FieldStorageConfigInterface::CARDINALITY_UNLIMITED) {
+        $multi = TRUE;
+      }
+      else {
+        $multi = FALSE;
+      }
+
       switch ($type) {
         case  'text':
           $this->derivatives[$field_id]['type'] = 'String';
           break;
         case  'string':
-          if ($field_id == 'job_ocupational_fields_name'
-            || $field_id == 'field_job_ocupational_fields'
-            || $field_id == 'job_employment_type_name'
-          ) {
-            $this->derivatives[$field_id]['type'] = '[String]';
-          }
-          else {
-            $this->derivatives[$field_id]['type'] = 'String';
-          }
+          $this->derivatives[$field_id]['type'] = 'String';
           break;
         case  'boolean':
           $this->derivatives[$field_id]['type'] = 'Boolean';
@@ -82,6 +88,9 @@ class SolrField extends DeriverBase implements ContainerDeriverInterface {
           $this->derivatives[$field_id]['type'] = 'String';
           break;
       }
+    }
+    if ($multi) {
+      $this->derivatives[$field_id]['type'] = '[' . $this->derivatives[$field_id]['type'] . ']';
     }
     return $this->derivatives;
   }
