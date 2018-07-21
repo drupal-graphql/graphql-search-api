@@ -7,16 +7,16 @@ use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use GraphQL\Type\Definition\ResolveInfo;
 
 /**
- * The id of a doc.
+ * A Solr Field.
  *
  * @GraphQLField(
  *   secure = true,
  *   parents = {"SolrDoc"},
- *   id = "doc_id",
+ *   id = "solr_field",
  *   deriver = "Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrField"
  * )
  */
-class DocId extends FieldPluginBase {
+class SolrField extends FieldPluginBase {
 
   /**
    * {@inheritdoc}

@@ -54,18 +54,18 @@ class SolrField extends DeriverBase implements ContainerDeriverInterface {
       $this->derivatives[$field_id]['id'] = $field_id;
       $this->derivatives[$field_id]['name'] = $field_id;
       $type = $field->getType();
+      $multivalue = false;
 
-      $datasource_id = explode(':', $field->getDatasourceId())[1];
-      $property_path = $field->getPropertyPath();
-      $field_name_original = explode(':', $property_path)[0];
-      $field_storage_config = \Drupal::entityTypeManager()
-        ->getStorage('field_storage_config')
-        ->load($datasource_id . '.' . $field_name_original);
-      if (isset($field_storage_config) && $field_storage_config->getCardinality() == FieldStorageConfigInterface::CARDINALITY_UNLIMITED) {
-        $multi = TRUE;
-      }
-      else {
-        $multi = FALSE;
+      if (!empty($field->getDatasourceId()[1])) {
+        $datasource_id = explode(':', $field->getDatasourceId())[1];
+        $property_path = $field->getPropertyPath();
+        $field_name_original = explode(':', $property_path)[0];
+        $field_storage_config = \Drupal::entityTypeManager()
+          ->getStorage('field_storage_config')
+          ->load($datasource_id . '.' . $field_name_original);
+        if (isset($field_storage_config) && $field_storage_config->getCardinality() == FieldStorageConfigInterface::CARDINALITY_UNLIMITED) {
+          $multivalue = TRUE;
+        }
       }
 
       switch ($type) {
@@ -88,9 +88,10 @@ class SolrField extends DeriverBase implements ContainerDeriverInterface {
           $this->derivatives[$field_id]['type'] = 'String';
           break;
       }
-    }
-    if ($multi) {
-      $this->derivatives[$field_id]['type'] = '[' . $this->derivatives[$field_id]['type'] . ']';
+
+      if($multivalue) {
+        $this->derivatives[$field_id]['type'] = '[' . $this->derivatives[$field_id]['type'] . ']';
+      }
     }
     return $this->derivatives;
   }
