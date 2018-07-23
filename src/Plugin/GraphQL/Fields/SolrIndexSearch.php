@@ -83,8 +83,9 @@ class SolrIndexSearch extends FieldPluginBase {
       // Handle error, check exception type -> SearchApiException ?
       \Drupal::logger('graphql_search_api')->error($exception);
     }
+    $return = [];
     foreach ($result_items as $id => &$item) {
-      $return = [];
+      $doc = [];
       foreach ($item->getFields() as $field_id => $field) {
         $value = NULL;
         $field_values = $field->getValues();
@@ -110,12 +111,13 @@ class SolrIndexSearch extends FieldPluginBase {
           }
         }
         if (!empty($value)) {
-          $return['solrDocs'][$field_id] = $value;
+          $doc[$field_id] = $value;
         }
       }
-      $return['type'] = 'Response';
-      $return['solrDocs']['type'] = 'Doc';
-      yield $return;
+      $doc['type'] = 'Doc';
+      $return['solrDocs'][] = $doc;
     }
+    $return['type'] = 'Response';
+    yield $return;
   }
 }
