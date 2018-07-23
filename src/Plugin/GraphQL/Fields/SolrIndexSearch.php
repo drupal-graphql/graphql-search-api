@@ -55,6 +55,10 @@ class SolrIndexSearch extends FieldPluginBase {
       $query->setLanguages($args['language']);
     }
 
+    if ($args['keys']) {
+      $query->keys($args['keys']);
+    }
+
     try {
       // Execute the search.
       $results = $query->execute();
