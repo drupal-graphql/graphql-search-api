@@ -19,7 +19,7 @@ use GraphQL\Type\Definition\ResolveInfo;
  *   nullable = true,
  *   multi = false,
  *   arguments = {
- *     "keys" = "String",
+ *     "fulltext" = "FulltextInput",
  *     "language" = "[String]",
  *     "conditions" = "[ConditionInput]",
  *     "range" = "RangeInput",
@@ -57,8 +57,9 @@ class SolrIndexSearch extends FieldPluginBase {
       $query->setLanguages($args['language']);
     }
 
-    if ($args['keys']) {
-      $query->keys($args['keys']);
+    if ($args['fulltext']) {
+      $query->keys($args['fulltext']['keys']);
+      $query->setFulltextFields($args['fulltext']['fields']);
     }
 
     if ($args['range']) {
