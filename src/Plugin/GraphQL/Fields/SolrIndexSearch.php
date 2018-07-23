@@ -13,25 +13,26 @@ use GraphQL\Type\Definition\ResolveInfo;
  * For simplicity reasons, this example does not utilize dependency injection.
  *
  * @GraphQLField(
- *   id = "solr_search",
+ *   id = "solr_index_search",
  *   type = "[Doc]",
- *   name = "solrSearch",
+ *   name = "solrIndexSearch",
  *   nullable = true,
  *   multi = false,
  *   arguments = {
  *     "query" = "String"
- *   }
+ *   },
+ *   deriver = "Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrIndexSearch"
  * )
  */
-class SolrSearch extends FieldPluginBase {
+class SolrIndexSearch extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
    */
   protected function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
 
-    // this should also come with the query
-    $index = \Drupal\search_api\Entity\Index::load('default_solr_index');
+    $derivative_id = $this->getDerivativeId();
+    $index = \Drupal\search_api\Entity\Index::load($derivative_id);
 
     $query = $index->query();
 

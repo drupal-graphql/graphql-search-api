@@ -8,40 +8,17 @@
 namespace Drupal\graphql_search_api\Plugin\GraphQL\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\Core\Entity\EntityStorageInterface;
-use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Drupal\field\FieldStorageConfigInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides GraphQL Field plugin definitions for solr fields.
  */
-class SolrField extends DeriverBase implements ContainerDeriverInterface {
+class SolrField extends DeriverBase {
 
   /**
-   * The node storage.
-   *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * Constructs new solr field.
    */
-  protected $nodeStorage;
-
-  /**
-   * Constructs new NodeBlock.
-   *
-   * @param \Drupal\Core\Entity\EntityStorageInterface $node_storage
-   *   The node storage.
-   */
-  public function __construct(EntityStorageInterface $node_storage) {
-    $this->nodeStorage = $node_storage;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, $base_plugin_id) {
-    return new static(
-      $container->get('entity.manager')->getStorage('node')
-    );
+  public function __construct() {
   }
 
   /**
