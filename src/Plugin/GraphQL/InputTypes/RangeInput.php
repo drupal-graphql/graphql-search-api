@@ -8,15 +8,14 @@ use Drupal\graphql\Plugin\GraphQL\InputTypes\InputTypePluginBase;
  * Condition input type.
  *
  * @GraphQLInputType(
- *   id = "condition_input",
- *   name = "ConditionInput",
+ *   id = "rangeInput",
+ *   name = "RangeInput",
  *   fields = {
- *     "name" = "String!",
- *     "value" = "String!",
- *     "operator" = "String"
+ *     "start" = "Int!",
+ *     "end" = "Int!"
  *   }
  * )
  */
-class ConditionInput extends InputTypePluginBase {
+class RangeInput extends InputTypePluginBase {
 
 }
