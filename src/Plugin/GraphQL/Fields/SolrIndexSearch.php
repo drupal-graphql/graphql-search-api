@@ -19,9 +19,12 @@ use GraphQL\Type\Definition\ResolveInfo;
  *   nullable = true,
  *   multi = false,
  *   arguments = {
- *     "query" = "String"
+ *     "keys" = "String",
+ *     "language" = "[String]",
+ *     "conditions" = "[ConditionInput]"
  *   },
- *   deriver = "Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrIndexSearch"
+ *   deriver =
+ *   "Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrIndexSearch"
  * )
  */
 class SolrIndexSearch extends FieldPluginBase {
@@ -37,7 +40,16 @@ class SolrIndexSearch extends FieldPluginBase {
     $query = $index->query();
 
     // Set additional conditions.
-    $query->addCondition('status', 1);
+    if ($args['conditions']) {
+      foreach ($args['conditions'] as $condition) {
+        $query->addCondition($condition['name'], $condition['value']);
+      }
+    }
+
+    if ($args['language']) {
+      // Restrict the search to specific languages.
+      $query->setLanguages($args['language']);
+    }
 
     try {
       // Execute the search.
