@@ -23,7 +23,8 @@ use GraphQL\Type\Definition\ResolveInfo;
  *     "language" = "[String]",
  *     "conditions" = "[ConditionInput]",
  *     "range" = "RangeInput",
- *     "sort" = "SortInput"
+ *     "sort" = "SortInput",
+ *     "facets" = "[FacetInput]",
  *   },
  *   deriver =
  *   "Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrIndexSearch"
@@ -74,6 +75,24 @@ class SolrIndexSearch extends FieldPluginBase {
       $query->sort($args['sort']['field'], $args['sort']['value']);
     }
 
+
+    if ($args['facets']) {
+      $server = $index->getServerInstance();
+      if ($server->supportsFeature('search_api_facets')) {
+        foreach ($args['facets'] as $facet) {
+          $query->setOption('search_api_facets', [
+            'job_ocupational_fields_name' => [
+              'field' => $facet['field'],
+              'limit' => $facet['limit'],
+              'operator' => $facet['operator'],
+              'min_count' => $facet['min_count'],
+              'missing' => $facet['missing'],
+            ],
+          ]);
+        }
+      }
+    }
+
     try {
       // Execute the search.
       $results = $query->execute();
@@ -117,6 +136,10 @@ class SolrIndexSearch extends FieldPluginBase {
       $doc['type'] = 'Doc';
       $return['solrDocs'][] = $doc;
     }
+
+    // Facets
+    $facets = $results->getExtraData('search_api_facets');
+
     $return['type'] = 'Response';
     yield $return;
   }
