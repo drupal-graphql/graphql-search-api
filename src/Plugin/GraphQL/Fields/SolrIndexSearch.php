@@ -22,7 +22,8 @@ use GraphQL\Type\Definition\ResolveInfo;
  *     "keys" = "String",
  *     "language" = "[String]",
  *     "conditions" = "[ConditionInput]",
- *     "range" = "RangeInput"
+ *     "range" = "RangeInput",
+ *     "sort" = "SortInput"
  *   },
  *   deriver =
  *   "Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrIndexSearch"
@@ -63,6 +64,11 @@ class SolrIndexSearch extends FieldPluginBase {
     if ($args['range']) {
       // Do paging.
       $query->range($args['range']['start'], $args['range']['end']);
+    }
+
+    if ($args['sort']) {
+      // Do paging.
+      $query->sort($args['sort']['field'], $args['sort']['value']);
     }
 
     try {
