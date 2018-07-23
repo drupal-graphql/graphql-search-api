@@ -14,7 +14,7 @@ use GraphQL\Type\Definition\ResolveInfo;
  *
  * @GraphQLField(
  *   id = "solr_index_search",
- *   type = "[Doc]",
+ *   type = "SolrResponse",
  *   name = "solrIndexSearch",
  *   nullable = true,
  *   multi = false,
@@ -59,7 +59,9 @@ class SolrIndexSearch extends FieldPluginBase {
 
     if ($args['fulltext']) {
       $query->keys($args['fulltext']['keys']);
-      $query->setFulltextFields($args['fulltext']['fields']);
+      if (!empty($args['fulltext']['fields'])) {
+        $query->setFulltextFields($args['fulltext']['fields']);
+      }
     }
 
     if ($args['range']) {
@@ -108,10 +110,11 @@ class SolrIndexSearch extends FieldPluginBase {
           }
         }
         if (!empty($value)) {
-          $return[$field_id] = $value;
+          $return['solrDocs'][$field_id] = $value;
         }
       }
-      $return['type'] = 'Doc';
+      $return['type'] = 'Response';
+      $return['solrDocs']['type'] = 'Doc';
       yield $return;
     }
   }
