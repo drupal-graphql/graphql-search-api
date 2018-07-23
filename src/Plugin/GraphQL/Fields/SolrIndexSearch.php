@@ -42,7 +42,11 @@ class SolrIndexSearch extends FieldPluginBase {
     // Set additional conditions.
     if ($args['conditions']) {
       foreach ($args['conditions'] as $condition) {
-        $query->addCondition($condition['name'], $condition['value']);
+        if (empty($condition['operator'])) {
+          $condition['operator'] = '=';
+        }
+
+        $query->addCondition($condition['name'], $condition['value'], $condition['operator']);
       }
     }
 
