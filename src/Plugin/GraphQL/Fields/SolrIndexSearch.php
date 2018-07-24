@@ -23,7 +23,8 @@ use GraphQL\Type\Definition\ResolveInfo;
  *     "language" = "[String]",
  *     "conditions" = "[ConditionInput]",
  *     "range" = "RangeInput",
- *     "sort" = "SortInput"
+ *     "sort" = "SortInput",
+ *     "facets" = "[FacetInput]",
  *   },
  *   deriver =
  *   "Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrIndexSearch"
@@ -74,6 +75,24 @@ class SolrIndexSearch extends FieldPluginBase {
       $query->sort($args['sort']['field'], $args['sort']['value']);
     }
 
+
+    if ($args['facets']) {
+      $server = $index->getServerInstance();
+      if ($server->supportsFeature('search_api_facets')) {
+        $facets_array = [];
+        foreach ($args['facets'] as $facet) {
+          $facets_array[$facet['field']] = [
+            'field' => $facet['field'],
+            'limit' => $facet['limit'],
+            'operator' => $facet['operator'],
+            'min_count' => $facet['min_count'],
+            'missing' => $facet['missing'],
+          ];
+        }
+        $query->setOption('search_api_facets', $facets_array);
+      }
+    }
+
     try {
       // Execute the search.
       $results = $query->execute();
@@ -117,6 +136,23 @@ class SolrIndexSearch extends FieldPluginBase {
       $doc['type'] = 'Doc';
       $return['solrDocs'][] = $doc;
     }
+
+    // Facets
+    $facets = $results->getExtraData('search_api_facets');
+    foreach ($facets as $facet_id => $facet_values) {
+      $facet_resp = [];
+      $facet_resp['type'] = 'Facet';
+      $facet_resp['solrFacetName'] = $facet_id;
+      foreach ($facet_values as $facet_value) {
+        $fv = [];
+        $fv['type'] = 'FacetValue';
+        $fv['solrFacetFilter'] = $facet_value['filter'];
+        $fv['solrFacetCount'] = $facet_value['count'];
+        $facet_resp['solrFacetValues'][] = $fv;
+      }
+      $return['solrFacets'][] = $facet_resp;
+    }
+
     $return['type'] = 'Response';
     yield $return;
   }
