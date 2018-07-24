@@ -199,3 +199,5 @@ here I am asking for two facets to be returned with the query. One for occupatio
 ```
 
 We can see that the results in the facets tells us about the number of results in the query so we can see we have "2" items for "marketing" in the occupational fields name, which is correct. This is especially usefull when you return a list that is very long (maybe paginated) but want to give the user a full "glimpse" of the whole result set, so he doesn't have to click around in the results and filter to unnecessary results.
+
+Here is a video of adding facets to a query : https://www.youtube.com/watch?v=bMqw846BmPo&feature=youtu.be
