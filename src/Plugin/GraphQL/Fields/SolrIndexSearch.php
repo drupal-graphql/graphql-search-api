@@ -81,7 +81,7 @@ class SolrIndexSearch extends FieldPluginBase {
       if ($server->supportsFeature('search_api_facets')) {
         foreach ($args['facets'] as $facet) {
           $query->setOption('search_api_facets', [
-            'job_ocupational_fields_name' => [
+            $facet['field'] => [
               'field' => $facet['field'],
               'limit' => $facet['limit'],
               'operator' => $facet['operator'],
