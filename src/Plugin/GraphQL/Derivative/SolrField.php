@@ -31,7 +31,7 @@ class SolrField extends DeriverBase {
       $this->derivatives[$field_id]['id'] = $field_id;
       $this->derivatives[$field_id]['name'] = $field_id;
       $type = $field->getType();
-      $multivalue = false;
+      $multivalue = FALSE;
 
       if (!empty($field->getDatasourceId()[1])) {
         $datasource_id = explode(':', $field->getDatasourceId())[1];
@@ -66,7 +66,7 @@ class SolrField extends DeriverBase {
           break;
       }
 
-      if($multivalue) {
+      if ($multivalue) {
         $this->derivatives[$field_id]['type'] = '[' . $this->derivatives[$field_id]['type'] . ']';
       }
     }

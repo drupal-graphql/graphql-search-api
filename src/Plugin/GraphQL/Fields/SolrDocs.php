@@ -23,7 +23,7 @@ class SolrDocs extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-    foreach($value['solrDocs'] as $doc) {
+    foreach ($value['solrDocs'] as $doc) {
       yield $doc;
     }
   }

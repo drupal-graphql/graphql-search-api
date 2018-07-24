@@ -2,7 +2,8 @@
 
 /**
  * @file
- * Contains \Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrIndexSearch.
+ * Contains
+ *   \Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrIndexSearch.
  */
 
 namespace Drupal\graphql_search_api\Plugin\GraphQL\Derivative;
