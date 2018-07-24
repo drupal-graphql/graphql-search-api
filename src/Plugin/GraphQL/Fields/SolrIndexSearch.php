@@ -79,17 +79,17 @@ class SolrIndexSearch extends FieldPluginBase {
     if ($args['facets']) {
       $server = $index->getServerInstance();
       if ($server->supportsFeature('search_api_facets')) {
+        $facets_array = [];
         foreach ($args['facets'] as $facet) {
-          $query->setOption('search_api_facets', [
-            $facet['field'] => [
-              'field' => $facet['field'],
-              'limit' => $facet['limit'],
-              'operator' => $facet['operator'],
-              'min_count' => $facet['min_count'],
-              'missing' => $facet['missing'],
-            ],
-          ]);
+          $facets_array[$facet['field']] = [
+            'field' => $facet['field'],
+            'limit' => $facet['limit'],
+            'operator' => $facet['operator'],
+            'min_count' => $facet['min_count'],
+            'missing' => $facet['missing'],
+          ];
         }
+        $query->setOption('search_api_facets', $facets_array);
       }
     }
 
@@ -139,6 +139,19 @@ class SolrIndexSearch extends FieldPluginBase {
 
     // Facets
     $facets = $results->getExtraData('search_api_facets');
+    foreach ($facets as $facet_id => $facet_values) {
+      $facet_resp = [];
+      $facet_resp['type'] = 'Facet';
+      $facet_resp['solrFacetName'] = $facet_id;
+      foreach ($facet_values as $facet_value) {
+        $fv = [];
+        $fv['type'] = 'FacetValue';
+        $fv['solrFacetFilter'] = $facet_value['filter'];
+        $fv['solrFacetCount'] = $facet_value['count'];
+        $facet_resp['solrFacetValues'][] = $fv;
+      }
+      $return['solrFacets'][] = $facet_resp;
+    }
 
     $return['type'] = 'Response';
     yield $return;
