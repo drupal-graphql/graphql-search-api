@@ -108,95 +108,99 @@ The module supports facets by providing the facets argument (see above) and also
 
 here I am asking for two facets to be returned with the query. One for occupational fields name (a custom field in a job content type in this case) and another one for a simillar field called "job_employment_type_name". In the response information about these two facets will be provided : 
 
-```
-{
-  "data": {
-    "default_solr_indexSolrSearch": {
-      "solrDocs": [
-        {
-          "title": "Hello world graphql metatag",
-          "url": "/job/hello-world-redirected",
-          "status": true,
-          "job_ocupational_fields_name": [
-            "Marketing",
-            "Public relations"
-          ],
-          "job_employment_type_name": [
-            "Apprenticeship",
-            "Full time"
-          ]
-        },
-        {
-          "title": "Article name",
-          "url": "/job/article-name",
-          "status": true,
-          "job_ocupational_fields_name": [
-            "Informatics",
-            "Marketing",
-            "Language"
-          ],
-          "job_employment_type_name": [
-            "Part time",
-            "Internship"
-          ]
-        }
-      ],
-      "solrFacets": [
-        {
-          "solrFacetName": "job_ocupational_fields_name",
-          "solrFacetValues": [
-            {
-              "solrFacetFilter": "\"marketing\"",
-              "solrFacetCount": 2
-            },
-            {
-              "solrFacetFilter": "\"informatics\"",
-              "solrFacetCount": 1
-            },
-            {
-              "solrFacetFilter": "\"language\"",
-              "solrFacetCount": 1
-            },
-            {
-              "solrFacetFilter": "\"public relations\"",
-              "solrFacetCount": 1
-            },
-            {
-              "solrFacetFilter": "!",
-              "solrFacetCount": 0
-            }
-          ]
-        },
-        {
-          "solrFacetName": "job_employment_type_name",
-          "solrFacetValues": [
-            {
-              "solrFacetFilter": "\"apprenticeship\"",
-              "solrFacetCount": 1
-            },
-            {
-              "solrFacetFilter": "\"full time\"",
-              "solrFacetCount": 1
-            },
-            {
-              "solrFacetFilter": "\"internship\"",
-              "solrFacetCount": 1
-            },
-            {
-              "solrFacetFilter": "\"part time\"",
-              "solrFacetCount": 1
-            },
-            {
-              "solrFacetFilter": "!",
-              "solrFacetCount": 0
-            }
-          ]
-        }
-      ]
+<details>
+  <summary>Click to see results</summary>
+  
+  ```
+  {
+    "data": {
+      "default_solr_indexSolrSearch": {
+        "solrDocs": [
+          {
+            "title": "Hello world graphql metatag",
+            "url": "/job/hello-world-redirected",
+            "status": true,
+            "job_ocupational_fields_name": [
+              "Marketing",
+              "Public relations"
+            ],
+            "job_employment_type_name": [
+              "Apprenticeship",
+              "Full time"
+            ]
+          },
+          {
+            "title": "Article name",
+            "url": "/job/article-name",
+            "status": true,
+            "job_ocupational_fields_name": [
+              "Informatics",
+              "Marketing",
+              "Language"
+            ],
+            "job_employment_type_name": [
+              "Part time",
+              "Internship"
+            ]
+          }
+        ],
+        "solrFacets": [
+          {
+            "solrFacetName": "job_ocupational_fields_name",
+            "solrFacetValues": [
+              {
+                "solrFacetFilter": "\"marketing\"",
+                "solrFacetCount": 2
+              },
+              {
+                "solrFacetFilter": "\"informatics\"",
+                "solrFacetCount": 1
+              },
+              {
+                "solrFacetFilter": "\"language\"",
+                "solrFacetCount": 1
+              },
+              {
+                "solrFacetFilter": "\"public relations\"",
+                "solrFacetCount": 1
+              },
+              {
+                "solrFacetFilter": "!",
+                "solrFacetCount": 0
+              }
+            ]
+          },
+          {
+            "solrFacetName": "job_employment_type_name",
+            "solrFacetValues": [
+              {
+                "solrFacetFilter": "\"apprenticeship\"",
+                "solrFacetCount": 1
+              },
+              {
+                "solrFacetFilter": "\"full time\"",
+                "solrFacetCount": 1
+              },
+              {
+                "solrFacetFilter": "\"internship\"",
+                "solrFacetCount": 1
+              },
+              {
+                "solrFacetFilter": "\"part time\"",
+                "solrFacetCount": 1
+              },
+              {
+                "solrFacetFilter": "!",
+                "solrFacetCount": 0
+              }
+            ]
+          }
+        ]
+      }
     }
   }
-}
-```
+  ```
+</details>
 
 We can see that the results in the facets tells us about the number of results in the query so we can see we have "2" items for "marketing" in the occupational fields name, which is correct. This is especially usefull when you return a list that is very long (maybe paginated) but want to give the user a full "glimpse" of the whole result set, so he doesn't have to click around in the results and filter to unnecessary results.
 
