@@ -146,7 +146,7 @@ class SolrIndexSearch extends FieldPluginBase {
       foreach ($facet_values as $facet_value) {
         $fv = [];
         $fv['type'] = 'FacetValue';
-        $fv['solrFacetFilter'] = $facet_value['filter'];
+        $fv['solrFacetFilter'] = trim($facet_value['filter'], '"');
         $fv['solrFacetCount'] = $facet_value['count'];
         $facet_resp['solrFacetValues'][] = $fv;
       }
