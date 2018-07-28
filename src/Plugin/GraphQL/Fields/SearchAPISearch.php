@@ -25,6 +25,7 @@ use Drupal\graphql_search_api\Utility\SearchAPIHelper;
  *     "range" = "RangeInput",
  *     "sort" = "SortInput",
  *     "facets" = "[FacetInput]",
+ *     "solr_params" = "[SolrParameterInput]",
  *   },
  * )
  */
@@ -78,6 +79,21 @@ class SearchAPISearch extends FieldPluginBase {
       }
       // Set the condition in the query.
       $this->query->addCondition($condition['name'], $condition['value'], $condition['operator']);
+    }
+  }
+
+  /**
+   * Adds direct Solr parameters to the Search API query.
+   *
+   * @params
+   *  The conditions to be added.
+   */
+  private function addSolrParams($params) {
+
+    // Loop through conditions to add them into the query.
+    foreach ($params as $param) {
+      // Set the condition in the query.
+      $this->query->setOption('solr_param_' . $param['parameter'], $param['value']);
     }
   }
 
@@ -147,6 +163,10 @@ class SearchAPISearch extends FieldPluginBase {
     // Adding query conditions if they exist.
     if ($args['conditions']) {
       $this->addConditions($args['conditions']);
+    }
+    // Adding Solr specific parameters if they exist.
+    if ($args['solr_params']) {
+      $this->addSolrParams($args['solr_params']);
     }
     // Restrict the search to specific languages.
     if ($args['language']) {
