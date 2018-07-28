@@ -7,20 +7,20 @@ use Drupal\graphql\Plugin\GraphQL\Types\TypePluginBase;
 use GraphQL\Type\Definition\ResolveInfo;
 
 /**
- * A solr doc type.
+ * A solr facet.
  *
  * @GraphQLType(
- *   id = "doc",
- *   name = "Doc",
- *   interfaces = {"SolrDoc"},
+ *   id = "facet",
+ *   name = "SearchAPIFacet",
  * )
  */
-class Doc extends TypePluginBase {
+class SearchAPIFacet extends TypePluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function applies($object, ResolveContext $context, ResolveInfo $info) {
-    return $object['type'] == 'Doc';
+    return $object['type'] == 'SearchAPIFacet';
   }
+
 }
