@@ -17,7 +17,7 @@ use Drupal\search_api\Entity\Index;
  *   nullable = true,
  *   multi = false,
  *   arguments = {
- *     "index_id" = "String",
+ *     "index_id" = "String!",
  *     "fulltext" = "FulltextInput",
  *     "language" = "[String]",
  *     "conditions" = "[ConditionInput]",
