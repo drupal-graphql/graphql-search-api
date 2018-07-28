@@ -7,24 +7,26 @@ use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use GraphQL\Type\Definition\ResolveInfo;
 
 /**
- * A Solr Field.
+ * A Search API document Field.
  *
  * @GraphQLField(
  *   secure = true,
- *   parents = {"SolrResponse"},
- *   id = "solrDocs",
- *   name = "solrDocs",
- *   type = "[Doc]",
+ *   parents = {"SearchAPIResult"},
+ *   id = "search_api_documents",
+ *   name = "documents",
+ *   type = "[SearchAPIDocument]",
  * )
  */
-class SolrDocs extends FieldPluginBase {
+class SearchAPIDocuments extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-    foreach ($value['solrDocs'] as $doc) {
+    foreach ($value['SearchAPIDocument'] as $doc) {
       yield $doc;
     }
   }
+
 }
+
