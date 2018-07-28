@@ -29,4 +29,3 @@ class SearchAPIDocuments extends FieldPluginBase {
   }
 
 }
-

@@ -4,7 +4,6 @@ namespace Drupal\graphql_search_api\Plugin\GraphQL\Fields;
 
 use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
-use Drupal\field\FieldStorageConfigInterface;
 use GraphQL\Type\Definition\ResolveInfo;
 use Drupal\search_api\Entity\Index;
 use Drupal\graphql_search_api\Utility\SearchAPIHelper;
@@ -43,7 +42,7 @@ class SearchAPISearch extends FieldPluginBase {
     $this->index = Index::load($args['index_id']);
 
     // Prepare the query with our arguments.
-    $this->prepareSearchAPIQuery($args);
+    $this->prepareSearchQuery($args);
 
     // Execute search.
     try {
@@ -64,7 +63,13 @@ class SearchAPISearch extends FieldPluginBase {
 
   }
 
-  protected function addConditions($conditions) {
+  /**
+   * Adds conditions to the Search API query.
+   *
+   * @conditions
+   *  The conditions to be added.
+   */
+  private function addConditions($conditions) {
 
     // Loop through conditions to add them into the query.
     foreach ($conditions as $condition) {
@@ -76,7 +81,14 @@ class SearchAPISearch extends FieldPluginBase {
     }
   }
 
-  protected function setFulltextFields($full_text_params) {
+  /**
+   * Sets fulltext fields in the Search API query.
+   *
+   * @full_text_params
+   *  Parameters containing fulltext keywords to be used as well as optional
+   *  fields.
+   */
+  private function setFulltextFields($full_text_params) {
 
     // Set the mandatory keys in the query.
     $this->query->keys($full_text_params['keys']);
@@ -87,7 +99,13 @@ class SearchAPISearch extends FieldPluginBase {
     }
   }
 
-  protected function setFacets($facets) {
+  /**
+   * Sets facets in the Search API query.
+   *
+   * @facets
+   *  The facets to be added to the query.
+   */
+  private function setFacets($facets) {
 
     // Retrieve this index server details.
     $server = $this->index->getServerInstance();
@@ -113,7 +131,15 @@ class SearchAPISearch extends FieldPluginBase {
     }
   }
 
-  protected function prepareSearchAPIQuery($args) {
+  /**
+   * Prepares the Search API query by adding all possible options.
+   *
+   * Options include conditions, language, fulltext, range, sort and facets.
+   *
+   * @args
+   *  The arguments containing all the parameters to be loaded to the query.
+   */
+  private function prepareSearchQuery($args) {
 
     // Prepare a query for the respective Search API index.
     $this->query = $this->index->query();
@@ -144,7 +170,13 @@ class SearchAPISearch extends FieldPluginBase {
     }
   }
 
-  protected function getSearchResponse($results) {
+  /**
+   * Obtain a Search Response from the results returned by Search API.
+   *
+   * @results
+   *  The Search API results to be parsed.
+   */
+  private function getSearchResponse($results) {
 
     // Obtain result items.
     $result_items = $results->getResultItems();
@@ -168,7 +200,15 @@ class SearchAPISearch extends FieldPluginBase {
     return $search_response;
   }
 
-  protected function loadResponseFacet($facet_id, $facet_values) {
+  /**
+   * Loads a Facet into a structured response array.
+   *
+   * @facet_id
+   *  The id of the facet to be added.
+   * @facet_values
+   *  The values for the facet to be added.
+   */
+  private function loadResponseFacet($facet_id, $facet_values) {
 
     // Initialise variables.
     $response_facet = [];
@@ -189,7 +229,13 @@ class SearchAPISearch extends FieldPluginBase {
     return $response_facet;
   }
 
-  protected function loadResponseDocument($result_item) {
+  /**
+   * Loads a Document into a structured response array.
+   *
+   * @result_item
+   *  The result item that contains the document information.
+   */
+  private function loadResponseDocument($result_item) {
 
     // Initialise a response document.
     $response_document = [];
@@ -230,4 +276,5 @@ class SearchAPISearch extends FieldPluginBase {
 
     return $response_document;
   }
+
 }

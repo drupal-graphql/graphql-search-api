@@ -27,4 +27,5 @@ class SearchAPIFacets extends FieldPluginBase {
       yield $facet;
     }
   }
+
 }

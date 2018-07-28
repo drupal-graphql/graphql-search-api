@@ -22,4 +22,5 @@ class SearchAPIFacetValue extends TypePluginBase {
   public function applies($object, ResolveContext $context, ResolveInfo $info) {
     return $object['type'] == 'SearchAPIFacetValue';
   }
+
 }

@@ -1,14 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\graphql_search_api\Plugin\GraphQL\Derivers\SearchAPIFieldDeriver.
- */
-
 namespace Drupal\graphql_search_api\Plugin\GraphQL\Derivers;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\field\FieldStorageConfigInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\graphql_search_api\Utility\SearchAPIHelper;
 
@@ -56,7 +50,15 @@ class SearchAPIFieldDeriver extends DeriverBase {
     return $this->derivatives;
   }
 
-  private function setFieldType($field,$field_id) {
+  /**
+   * This method maps the field types in Search API to GraphQL types.
+   *
+   * @field
+   *   The field to map.
+   * @field_id
+   *   The id of the field to map.
+   */
+  private function setFieldType($field, $field_id) {
 
     // Get field type.
     $type = $field->getType();
@@ -99,4 +101,5 @@ class SearchAPIFieldDeriver extends DeriverBase {
       $this->derivatives[$field_id]['type'] = '[' . $this->derivatives[$field_id]['type'] . ']';
     }
   }
+
 }

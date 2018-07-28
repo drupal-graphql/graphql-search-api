@@ -3,14 +3,15 @@
 namespace Drupal\graphql_search_api\Utility;
 
 /**
- * TODO
+ * TODO.
  */
 class SearchAPIHelper {
 
   /**
    * Checks storage if a field is multivalued.
    *
-   * @param $field
+   * @field
+   *  The field to be checked.
    */
   public static function checkMultivalue($field) {
 
@@ -36,5 +37,5 @@ class SearchAPIHelper {
 
     return $multivalue;
   }
-}
 
+}

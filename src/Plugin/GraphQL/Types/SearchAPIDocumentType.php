@@ -27,4 +27,5 @@ class SearchAPIDocumentType extends TypePluginBase {
 
     return $object['type'] == $derivative_id;
   }
+
 }

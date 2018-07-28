@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\graphql_search_api\Plugin\GraphQL\Derivers\SearchAPIFieldDeriver.
- */
-
 namespace Drupal\graphql_search_api\Plugin\GraphQL\Derivers;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;

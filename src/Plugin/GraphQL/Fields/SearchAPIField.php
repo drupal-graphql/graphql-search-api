@@ -40,4 +40,5 @@ class SearchAPIField extends FieldPluginBase {
       }
     }
   }
+
 }
