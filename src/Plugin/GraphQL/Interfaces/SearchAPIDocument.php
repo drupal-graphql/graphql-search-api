@@ -8,10 +8,10 @@ use Drupal\graphql\Plugin\GraphQL\Interfaces\InterfacePluginBase;
  * Doc interface definition.
  *
  * @GraphQLInterface(
- *   id = "solr_doc",
- *   name = "SolrDoc"
+ *   id = "search_api_document",
+ *   name = "SearchAPIDocument"
  * )
  */
-class SolrDoc extends InterfacePluginBase {
+class SearchAPIDocument extends InterfacePluginBase {
 
 }
