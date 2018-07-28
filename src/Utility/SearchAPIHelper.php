@@ -19,9 +19,9 @@ class SearchAPIHelper {
 
     $multivalue = FALSE;
 
-    $field_config = $field->getDependencies()['config'][0];
+    if (isset($field->getDependencies()['config'][0])) {
 
-    if ($field_config) {
+      $field_config = $field->getDependencies()['config'][0];
 
       $field_id = str_replace('field.storage.', "", $field_config);
 
