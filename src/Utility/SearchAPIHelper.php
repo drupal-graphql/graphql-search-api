@@ -2,6 +2,8 @@
 
 namespace Drupal\graphql_search_api\Utility;
 
+use Drupal\field\FieldStorageConfigInterface;
+
 /**
  * TODO.
  */
