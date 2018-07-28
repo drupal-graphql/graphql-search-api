@@ -1,6 +1,6 @@
-name: Graphql search api
+name: Graphql Search API
 type: module
-description: A collection of search api integration points for graphql
+description: A Search API GraphQL schema.
 core: 8.x
 package: Search
 dependencies:
