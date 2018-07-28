@@ -19,17 +19,16 @@ class SearchAPIHelper {
 
     $multivalue = FALSE;
 
-    if (!empty($field->getDatasourceId())) {
+    $field_config = $field->getDependencies()['config'][0];
 
-      // Obtain details needed to load the field from storage.
-      $datasource_id = explode(':', $field->getDatasourceId())[1];
-      $property_path = $field->getPropertyPath();
-      $field_name_original = explode(':', $property_path)[0];
+    if ($field_config) {
+
+      $field_id = str_replace('field.storage.',"", $field_config);
 
       // Load the field from storage.
       $field_storage_config = \Drupal::entityTypeManager()
         ->getStorage('field_storage_config')
-        ->load($datasource_id . '.' . $field_name_original);
+        ->load($field_id);
 
       // Set field as multivalue if it has unlimited cardinality.
       if (isset($field_storage_config) && $field_storage_config->getCardinality() == FieldStorageConfigInterface::CARDINALITY_UNLIMITED) {
