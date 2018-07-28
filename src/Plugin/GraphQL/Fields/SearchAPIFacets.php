@@ -11,19 +11,19 @@ use GraphQL\Type\Definition\ResolveInfo;
  *
  * @GraphQLField(
  *   secure = true,
- *   parents = {"SolrResponse"},
- *   id = "solrFacets",
- *   name = "solrFacets",
- *   type = "[Facet]",
+ *   parents = {"SearchAPIResult"},
+ *   id = "search_api_facets",
+ *   name = "facets",
+ *   type = "[SearchAPIFacet]",
  * )
  */
-class SolrFacets extends FieldPluginBase {
+class SearchAPIFacets extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-    foreach ($value['solrFacets'] as $facet) {
+    foreach ($value['facets'] as $facet) {
       yield $facet;
     }
   }
