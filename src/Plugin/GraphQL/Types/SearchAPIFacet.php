@@ -11,16 +11,15 @@ use GraphQL\Type\Definition\ResolveInfo;
  *
  * @GraphQLType(
  *   id = "facet",
- *   name = "Facet",
- *   interfaces = {"SolrFacet"},
+ *   name = "SearchAPIFacet",
  * )
  */
-class Facet extends TypePluginBase {
+class SearchAPIFacet extends TypePluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function applies($object, ResolveContext $context, ResolveInfo $info) {
-    return $object['type'] == 'Facet';
+    return $object['type'] == 'SearchAPIFacet';
   }
 }
