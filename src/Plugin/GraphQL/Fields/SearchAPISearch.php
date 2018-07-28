@@ -36,7 +36,7 @@ class SearchAPISearch extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
+  public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
 
     // Load up the index passed in argument.
     $this->index = Index::load($args['index_id']);
