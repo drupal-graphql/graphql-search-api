@@ -11,13 +11,13 @@ use GraphQL\Type\Definition\ResolveInfo;
  *
  * @GraphQLField(
  *   secure = true,
- *   parents = {"SolrFacet"},
- *   id = "solr_facet_values",
- *   name = "solrFacetValues",
- *   type = "[FacetValue]"
+ *   parents = {"SearchAPIFacet"},
+ *   id = "search_api_facet_values",
+ *   name = "values",
+ *   type = "[SearchAPIFacetValue]"
  * )
  */
-class SolrFacetValues extends FieldPluginBase {
+class SearchAPIFacetValues extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
