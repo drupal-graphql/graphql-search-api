@@ -23,7 +23,7 @@ class SearchAPIHelper {
 
     if ($field_config) {
 
-      $field_id = str_replace('field.storage.',"", $field_config);
+      $field_id = str_replace('field.storage.', "", $field_config);
 
       // Load the field from storage.
       $field_storage_config = \Drupal::entityTypeManager()

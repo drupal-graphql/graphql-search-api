@@ -6,7 +6,6 @@ use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
 use GraphQL\Type\Definition\ResolveInfo;
 use Drupal\search_api\Entity\Index;
-use Drupal\graphql_search_api\Utility\SearchAPIHelper;
 
 /**
  * A query field that wraps a Search API query.
@@ -266,23 +265,37 @@ class SearchAPISearch extends FieldPluginBase {
       // Initialise a values.
       $value = NULL;
       $field_values = $field->getValues();
+      $field_type = $field->getType();
+      $field_cardinality = count($field_values);
 
-      // Try to obtain the text value for this field.
-      // @Todo this section isn't working properly.
-      if (!empty($field_values[0]) && method_exists($field_values[0], 'getText')) {
-        $value = $field_values[0]->getText();
+      // Fulltext multivalue fields have a different format.
+      if ($field_type == 'text') {
+        // Multivalue fields.
+        if ($field_cardinality > 1) {
+          // Create a new array with text values instead of objects.
+          foreach ($field_values as $field_value) {
+            $value[] = $field_value->getText();
+          }
+        }
+        // Singlevalue fields.
+        elseif (!empty($field_values)) {
+          $value = $field_values[0]->getText();
+        }
       }
-      // If we can't then we need to load it from the storage config.
+      // For other types of fields we can just grab contents from the array.
       else {
-        if (SearchAPIHelper::checkMultivalue($field)) {
+        // Multivalue fields.
+        if ($field_cardinality > 1) {
           $value = $field_values;
         }
+        // Single value fields.
         else {
-          if (!empty($field_values[0])) {
+          if (!empty($field_values)) {
             $value = $field_values[0];
           }
         }
       }
+      // Load the value in the response document.
       if (!empty($value)) {
         $response_document[$field_id] = $value;
       }
