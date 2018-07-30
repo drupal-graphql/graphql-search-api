@@ -7,22 +7,25 @@ use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use GraphQL\Type\Definition\ResolveInfo;
 
 /**
- * A Solr facet filter field.
+ * A Solr facet result.
  *
  * @GraphQLField(
  *   secure = true,
- *   parents = {"SolrFacetValue"},
- *   id = "solr_facet_filter",
- *   name = "solrFacetFilter",
- *   type = "String"
+ *   parents = {"SearchAPIResult"},
+ *   id = "search_api_facets",
+ *   name = "facets",
+ *   type = "[SearchAPIFacet]",
  * )
  */
-class SolrFacetFilter extends FieldPluginBase {
+class SearchAPIFacets extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-    yield $value['solrFacetFilter'];
+    foreach ($value['facets'] as $facet) {
+      yield $facet;
+    }
   }
+
 }

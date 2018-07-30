@@ -11,25 +11,19 @@ use GraphQL\Type\Definition\ResolveInfo;
  *
  * @GraphQLField(
  *   secure = true,
- *   parents = {"SolrDoc"},
- *   id = "solr_field",
- *   deriver = "Drupal\graphql_search_api\Plugin\GraphQL\Derivative\SolrField"
+ *   parents = {"SearchAPIFacet"},
+ *   id = "search_api_facet_name",
+ *   name = "name",
+ *   type = "String"
  * )
  */
-class SolrField extends FieldPluginBase {
+class SearchAPIFacetName extends FieldPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-    $derivative_id = $this->getDerivativeId();
-    if (is_array($value[$derivative_id])) {
-      foreach ($value[$derivative_id] as $value_item) {
-        yield $value_item;
-      }
-    }
-    else {
-      yield $value[$derivative_id];
-    }
+    yield $value['name'];
   }
+
 }
