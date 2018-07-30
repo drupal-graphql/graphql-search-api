@@ -97,6 +97,9 @@ For more details about the options that can be used see the [Search parameters](
 
 ## Fields
 
+### SearchAPI Result Count
+A field to return the result count on the search query.
+
 ### SearchAPI Search
 The Search query is where everything happens. This is the query field that takes all the arguments and passes it to a 
 Search API query.
