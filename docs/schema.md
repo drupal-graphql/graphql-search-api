@@ -13,7 +13,7 @@ different document types all of which extend this interface.
 
 ### Search API Document Type
 The Search API Document Type type represents a Search API document and extends the Search API Document interface. Because we 
-have an unlimited amount of document types (one for each index) this Type uses a [Document Type deriver](#document-type-deriver) to generate the 
+have an unlimited amount of document types (one for each index) this Type uses a [Search API Document Type deriver](#search-api-document-type-deriver) to generate the 
 various document types dynamically. A Document can have multiple fields, as many as the specified index has configured 
 in Search API.
 
@@ -105,40 +105,48 @@ Apache Solr you need to specify the name of the field as appears in Solr (with t
 For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
 
 ### Sort
-TODO
+The Sort input allows us to pass sorting options to our query. The structure of this input is:
+
+* field - The field we want to sort by.
+* value - How we want to sort (ascending or descending).
+
+For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
 
 ## Fields
-TODO
 
-### Search
-TODO
+### SearchAPI Search
+The Search query is where everything happens. This is the query field that takes all the arguments and passes it to a 
+Search API query.
 
-### Documents
-TODO
+### SearchAPI Documents
+A list of Search API documents to be returned.
 
 ### Search API Field
-TODO
+These are the various fields of the type Search API Document. We use a [Search API Field deriver](#search-api-field-deriver)
+to have all the fields in a given index generated dynamically.
 
-### Facet
-TODO
+### Search API Facet
+This field returns a facet as specified in the type Search API Facet.
 
 #### Facet Name
-TODO
+This field returns the name for a facet in the response.
 
 #### Facet Value
-TODO
+This field returns the value for a given facet in the response.
 
 #### Facet Filter
-TODO
+This field returns the filter for a given facet in the response.
 
 #### Facet Count
-TODO
+This field returns the count for a given facet in the response.
 
 ## Derivers
-TODO
 
 ### Document Type Deriver
-TODO
+The Document Type deriver generates document types dynamically based on the existing Search API indexes. For example,
+if we have two indexes called `index_one` and `index_two`, then you will have the following available document types 
+`IndexOneDoc` and `IndexTwoDoc`.
 
-### Field Deriver
-TODO
+### Search API Field Deriver
+The Search API Field Deriver generates document fields dynamically based on the existing Search API indexes. It goes 
+through the available indexes and assigns the fields to the corresponding document types.
