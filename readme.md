@@ -6,7 +6,7 @@ This Drupal module provides an integration between [Drupal GraphQL](https://gith
 It allows developers to perform queries directly to a Search API index by leveraging the Search API module's API.
 
 Since it uses Search API it's not backend specific and can work with any engine such as Apache Solr or Elastic Search. 
-Check the [Development status](development-status.md) page to understand where this module is at in terms of development 
+Check the [Development status](http://graphql-search-api.readthedocs.io/en/latest/development-status/) page to understand where this module is at in terms of development 
 and how you can help make it better.
 
 ## Why? 
