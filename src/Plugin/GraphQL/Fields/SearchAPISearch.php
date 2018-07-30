@@ -56,6 +56,9 @@ class SearchAPISearch extends FieldPluginBase {
     // Get search response from results.
     $search_response = $this->getSearchResponse($results);
 
+    // Add the result count to the response.
+    $search_response['result_count'] = $results->getResultCount();
+
     // Set response type.
     $search_response['type'] = 'SearchAPIResult';
 
