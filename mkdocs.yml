@@ -1,0 +1,7 @@
+site_name: GraphQL Search API
+pages:
+    - Overview: index.md
+    - Schema: schema.md
+    - Search Parameters: search-parameters.md
+theme: readthedocs
+extra_css: [docs.css]
