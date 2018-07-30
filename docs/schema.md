@@ -66,9 +66,7 @@ The structure of the facet input is:
 For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
 
 ### Fulltext
-The Fulltext input allows us to specify fulltext arguments in our search query. Here is an example fulltext argument:
-
-`fulltext:{keys:"my keyword", fields:"body"}`
+The Fulltext input allows us to specify fulltext arguments in our search query.
 
 The structure of a Fulltext input is:
 
