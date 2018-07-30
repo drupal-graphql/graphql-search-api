@@ -1,7 +1,7 @@
 # Graphql Search API
 
 This Drupal module provides an integration between [Drupal GraphQL](https://github.com/drupal-graphql/graphql) and 
-[Search API Solr](https://www.drupal.org/project/search_api_solr) modules.
+[Search API](https://www.drupal.org/project/search_api) modules.
 
 It allows developers to perform queries directly to a Search API index by leveraging the Search API module's API.
 
