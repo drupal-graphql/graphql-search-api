@@ -34,6 +34,10 @@ This module provides the following features:
 * Dynamic fields on your GraphQL query based on the fields defined in your Search API indexes.
 * Apache Solr specific query syntax for advanced query options.
 
+## Video Tutorial
+[![IMAGE ALT TEXT HERE](images/video_tutorial.png)](http://www.youtube.com/watch?v=FbCkWaOuDB8)
+
+
 ## More information
 
 * Documentation: http://graphql-search-api.readthedocs.io
