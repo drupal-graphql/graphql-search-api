@@ -48,7 +48,7 @@ Once you have at least one index and some fields you can start querying your sea
 ![generic_query] (images/explorer_generic_query.png)
 
 ## Video Tutorial
-[![IMAGE ALT TEXT HERE](images/video_tutorial.png)](http://www.youtube.com/watch?v=FbCkWaOuDB8)
+[![Video tutorial](images/video_tutorial.png)](http://www.youtube.com/watch?v=FbCkWaOuDB8)
 
 
 ### Example query

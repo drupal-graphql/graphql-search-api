@@ -35,7 +35,7 @@ This module provides the following features:
 * Apache Solr specific query syntax for advanced query options.
 
 ## Video Tutorial
-[![IMAGE ALT TEXT HERE](images/video_tutorial.png)](http://www.youtube.com/watch?v=FbCkWaOuDB8)
+[![Video tutorial](docs/images/video_tutorial.png)](http://www.youtube.com/watch?v=FbCkWaOuDB8)
 
 
 ## More information
