@@ -37,9 +37,6 @@ The Search API Result type represents the response object returned by Search API
 
 ### Condition
 The Condition input provides an object to encapsulate a condition that can be passed to the search query as an argument.
-Here is an example condition: 
-
-`conditions:[{name:"location",operator:"=",value:"Australia"}]`
 
 The structure of a condition can be broken down in:
 
@@ -47,15 +44,11 @@ The structure of a condition can be broken down in:
 * name - The name of the condition (e.g 'location').
 * value - The value of to be evaluated in this condition (e.g 'Australia').
 
-For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
+For more details about the options that can be used see the [Search parameters](search-parameters.md#conditions) page.
 
 ### Facet
-The Facet input allows us to specify as arguments which facets we want returned in our query. Here is an example facet 
-argument:
-
-`facets:{field:"location",operator:"=",missing:false,min_count:1,limit:0}`
-
-The structure of the facet input is:
+The Facet input allows us to specify as arguments which facets we want returned in our query. The structure of the 
+facet input is:
 
 * operator - The operator for the facet query (e.g '=').
 * field - The field facet to be specified (e.g 'location').
@@ -63,7 +56,7 @@ The structure of the facet input is:
 * min_count - A minimum count for the facet in order for it to be returned.
 * limit - A limit on the number of values to be returned.
 
-For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
+For more details about the options that can be used see the [Search parameters](search-parameters.md#facets) page.
 
 ### Fulltext
 The Fulltext input allows us to specify fulltext arguments in our search query.
@@ -73,34 +66,26 @@ The structure of a Fulltext input is:
 * keys - The keywords to be used in the fulltext search.
 * fields - An optional argument that allows you to limit the fulltext search to a set of fields.
 
-For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
+For more details about the options that can be used see the [Search parameters](search-parameters.md#fulltext) page.
 
 ### Range
-The Range input allows us to specify a range in our query, which is useful for pagination purposes. An example of range 
-being used in a query:
-
-`range:{start:0,end:10}`
-
-The above can obtain the first page of results (assuming each page has 10 results). If we wanted to return the second 
-page we could use `start:10, end: 20`. The structure of the range input:
+The Range input allows us to specify a range in our query, which is useful for pagination purposes. The structure of 
+the range input:
 
 * start - The start of the range we want returned from the result set.
 * end - The end of the range we want returned from the result set. 
 
-For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
+For more details about the options that can be used see the [Search parameters](search-parameters.md#range) page.
 
 ### Solr Parameter
 The Solr Parameter input allows us to specify *any* raw Solr parameters directly in Solr Query language instead of 
-using Search API. Here is an example:
+using Search API.
 
-`solr_params:{parameter:"q",value:"ss_location:Australia"}`
+**Please note** that since this syntax is direct to Apache Solr you need to specify the name of the field as appears 
+in Solr (with the prefix).
 
-This is the equivalent of using a condition in our search parameter.
-
-**Please note** that since this syntax is direct to 
-Apache Solr you need to specify the name of the field as appears in Solr (with the prefix).
-
-For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
+For more details about the options that can be used see the 
+[Search parameters](search-parameters.md#solr-parameters-(apache-solr-only)) page.
 
 ### Sort
 The Sort input allows us to pass sorting options to our query. The structure of this input is:
@@ -108,7 +93,7 @@ The Sort input allows us to pass sorting options to our query. The structure of 
 * field - The field we want to sort by.
 * value - How we want to sort (ascending or descending).
 
-For more details about the options that can be used see the [Search parameters](search-parameters.md) page.
+For more details about the options that can be used see the [Search parameters](search-parameters.md#sort) page.
 
 ## Fields
 
