@@ -102,7 +102,7 @@ evaluated against the search backend.
 | Argument | Required | Type   | Values                                                                                                                  |
 |----------|----------|--------|-------------------------------------------------------------------------------------------------------------------------|
 | `operator` | no       | `String` | The operator allows us to specify the evaluation expression. All Search API conditions are supported. Some common examples: `=`, `<>`, `>`, `<`, `>=`, `<=`. |
-| `field`    | yes      | `String` | The field defines what field in the index to be evaluated against this condition.                                       |
+| `name`    | yes      | `String` | The name defines what field in the index to be evaluated against this condition.                                       |
 | `value`    | yes      | `String` | The value to be valuated against the specified field and operator.                                                      |                                    |
 
 ### Example
@@ -110,7 +110,7 @@ Returns the all results with type of course.
 
 ```
 {
-  searchAPISearch(index_id: "index_name", conditions: [{operator: "=", field: "type", value: "course"}]) {
+  searchAPISearch(index_id: "index_name", conditions: [{operator: "=", name: "type", value: "course"}]) {
     documents {
       index_id
       ... on IndexNameDoc {
