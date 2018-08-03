@@ -11,6 +11,7 @@ use Drupal\search_api\Entity\Index;
  * A query field that wraps a Search API query.
  *
  * @GraphQLField(
+ *   secure = true,
  *   id = "search_api_search",
  *   type = "SearchAPIResult",
  *   name = "searchAPISearch",
