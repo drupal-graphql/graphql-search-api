@@ -46,6 +46,17 @@ The structure of a condition can be broken down in:
 
 For more details about the options that can be used see the [Search parameters](search-parameters.md#conditions) page.
 
+### Condition Group
+The Condition Group input provides an object to encapsulate groups of conditions using a logical conjunction argument (e.g AND/OR).
+
+The structure of a condition group can be broken down in:
+
+* conditions - Conditions to be grouped (see Condition above).
+* groups - A group containing other condition groups.
+* conjunction - A logical operator for the group of conditions.
+
+For more details about the options that can be used see the [Search parameters](search-parameters.md#conditions) page.
+
 ### Facet
 The Facet input allows us to specify as arguments which facets we want returned in our query. The structure of the 
 facet input is:

@@ -122,6 +122,54 @@ Returns the all results with type of course.
 }
 ```
 
+## Condition Groups
+Condition groups enhance the possibilities provided by conditions. It allows you to group sets of conditions and join them
+using logical conjunctions such as AND or OR.
+
+| Argument | Required | Type   | Values                                                                                                                  |
+|----------|----------|--------|-------------------------------------------------------------------------------------------------------------------------|
+| `conditions` | no       | `[ConditionInput]` | A set of conditions to be grouped. |
+| `groups`    | no      | `[ConditionGroupInput]` | A list of nested groups under this condition group.                                       |
+| `conjunction`    | no      | `QueryConjunction` | the conjunction to be used in this group. Values can be AND or OR.                                                      |                                    |
+
+### Example
+Returns the all results with type of course.
+
+```
+{
+  searchAPISearch(index_id: "index_name", 
+    
+    condition_group: {
+      conjunction: AND,
+      groups: [
+        {
+          conjunction: OR,
+          conditions: [
+            {operator: "=", name: "study_field", value: "Engineering"},
+            {operator: "=", name: "study_field", value: "Health"}
+          ]
+        }, 
+        {
+          conjunction: OR, 
+          conditions: [
+            {operator: "=", name: "administrative_area", value: "NSW"},
+            {operator: "=", name: "administrative_area", value: "VIC"}
+          ]
+        }
+      ]
+    }
+  ) {
+    
+    documents {
+      ... on IndexNameDoc {
+        title
+        body
+      }
+    }
+  }
+}
+```
+
 ## Sort
 Sorting parameters allow you to sort the result set.
 
