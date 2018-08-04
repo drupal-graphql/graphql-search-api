@@ -21,7 +21,7 @@ use Drupal\search_api\Entity\Index;
  *     "index_id" = "String!",
  *     "fulltext" = "FulltextInput",
  *     "language" = "[String]",
- *     "condition_group" = "ConditionFilterInput",
+ *     "condition_group" = "ConditionGroupInput",
  *     "conditions" = "[ConditionInput]",
  *     "range" = "RangeInput",
  *     "sort" = "SortInput",

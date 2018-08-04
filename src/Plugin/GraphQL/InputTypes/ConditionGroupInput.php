@@ -8,12 +8,11 @@ use Drupal\graphql\Plugin\GraphQL\InputTypes\InputTypePluginBase;
  * Condition input type.
  *
  * @GraphQLInputType(
- *   id = "condition_filter_input",
- *   name = "ConditionFilterInput",
+ *   id = "condition_group_input",
+ *   name = "ConditionGroupInput",
  *   fields = {
  *     "conditions" = "[ConditionInput]",
- *     "groups" = "[ConditionFilterInput]",
- *     "operator" = "String",
+ *     "groups" = "[ConditionGroupInput]",
  *     "conjunction" = {
  *       "type" = "QueryConjunction",
  *       "default" = "AND"
@@ -21,6 +20,6 @@ use Drupal\graphql\Plugin\GraphQL\InputTypes\InputTypePluginBase;
  *   }
  * )
  */
-class ConditionFilterInput extends InputTypePluginBase {
+class ConditionGroupInput extends InputTypePluginBase {
 
 }
