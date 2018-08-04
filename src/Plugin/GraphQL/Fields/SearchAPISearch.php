@@ -21,6 +21,7 @@ use Drupal\search_api\Entity\Index;
  *     "index_id" = "String!",
  *     "fulltext" = "FulltextInput",
  *     "language" = "[String]",
+ *     "condition_group" = "ConditionFilterInput",
  *     "conditions" = "[ConditionInput]",
  *     "range" = "RangeInput",
  *     "sort" = "SortInput",
@@ -83,6 +84,47 @@ class SearchAPISearch extends FieldPluginBase {
       // Set the condition in the query.
       $this->query->addCondition($condition['name'], $condition['value'], $condition['operator']);
     }
+  }
+
+  /**
+   * Adds a condition group to the Search API query.
+   *
+   * @condition_group
+   *  The conditions to be added.
+   */
+  private function addConditionGroup($condition_group_arg) {
+
+    // Set default conjunction.
+    $conjunction = "AND";
+
+    // Set conjunction from args.
+    if ($this->query->createConditionGroup($condition_group_arg['conjunction'])) {
+
+      $conjunction = $condition_group_arg['conjunction'];
+    }
+
+    // Set conjunction condition groups in query.
+    $condition_groups = $this->query->createConditionGroup($conjunction);
+
+    // Loop through the groups in the args.
+    foreach ($condition_group_arg['groups'] as $group) {
+
+      // Create a single condition group.
+      $condition_group = $this->query->createConditionGroup($group['conjunction']);
+
+      // Loop through all conditions and add them to the Group.
+      foreach ($group['conditions'] as $condition) {
+
+        $condition_group->addCondition($condition['name'], $condition['value'], $condition['operator']);
+      }
+
+      // Merge the single groups to the condition group.
+      $condition_groups->addConditionGroup($condition_group);
+    }
+
+    // Add the condition groups to the query.
+    $this->query->addConditionGroup($condition_groups);
+
   }
 
   /**
@@ -166,6 +208,10 @@ class SearchAPISearch extends FieldPluginBase {
     // Adding query conditions if they exist.
     if ($args['conditions']) {
       $this->addConditions($args['conditions']);
+    }
+    // Adding query group conditions if they exist.
+    if ($args['condition_group']) {
+      $this->addConditionGroup($args['condition_group']);
     }
     // Adding Solr specific parameters if they exist.
     if ($args['solr_params']) {
