@@ -204,10 +204,10 @@ class SearchAPISearch extends FieldPluginBase {
     // Retrieve this index server details.
     $server = $this->index->getServerInstance();
 
-    // Check if the index server supports facets (e.g solr).
+    // Check if the index server supports More Like This (e.g solr).
     if ($server->supportsFeature('search_api_mlt')) {
 
-      // Set the facets in the query.
+      // Set the more like this parameters in the query.
       $this->query->setOption('search_api_mlt', $mlt_params);
     }
   }
@@ -257,7 +257,7 @@ class SearchAPISearch extends FieldPluginBase {
     if ($args['facets']) {
       $this->setFacets($args['facets']);
     }
-    // Adding facets to the query.
+    // Adding more like this parameters to the query.
     if ($args['more_like_this']) {
       $this->setMLT($args['more_like_this']);
     }
