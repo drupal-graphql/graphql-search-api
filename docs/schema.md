@@ -69,6 +69,15 @@ facet input is:
 
 For more details about the options that can be used see the [Search parameters](search-parameters.md#facets) page.
 
+### More Like This
+The More Like This input allows us to specify the id of the document we want to obtain similar results from as well as 
+the fields that we want to use for comparison.
+
+* id - The id of the Search API document to use for comparison.
+* fields - The fields to be used for the More Like This feature to retrieve similar items.
+
+For more details about the options that can be used see the [Search parameters](search-parameters.md#more-like-this) page.
+
 ### Fulltext
 The Fulltext input allows us to specify fulltext arguments in our search query.
 
