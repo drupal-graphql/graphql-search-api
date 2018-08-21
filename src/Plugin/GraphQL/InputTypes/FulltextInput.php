@@ -11,8 +11,9 @@ use Drupal\graphql\Plugin\GraphQL\InputTypes\InputTypePluginBase;
  *   id = "fulltextInput",
  *   name = "FulltextInput",
  *   fields = {
- *     "keys" = "String!",
+ *     "keys" = "[String]!",
  *     "fields" = "[String]",
+ *     "conjunction" = "String",
  *   }
  * )
  */
