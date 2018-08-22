@@ -151,7 +151,18 @@ class SearchAPISearch extends FieldPluginBase {
    */
   private function setFulltextFields($full_text_params) {
 
-    // Set the mandatory keys in the query.
+    // Check if keys is an array and if so set a conjunction.
+    if (is_array($full_text_params['keys'])) {
+      // If no conjunction was specified use OR as default.
+      if ($full_text_params['conjunction']) {
+        $full_text_params['keys']['#conjunction'] = $full_text_params['conjunction'];
+      }
+      else {
+        $full_text_params['keys']['#conjunction'] = 'OR';
+      }
+    }
+
+    // Set the keys in the query.
     $this->query->keys($full_text_params['keys']);
 
     // Set the optional fulltext fields if specified.
