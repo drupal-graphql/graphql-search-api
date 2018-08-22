@@ -233,6 +233,32 @@ Returns the all documents in the index and the facet values (and counts) for the
   }
 }
 ```
+## More Like This
+The More Like This argument can be used to obtain a list of similar documents to the one supplied based on a list of 
+fields for comparison (See [Apache Solr Documentation](https://lucene.apache.org/solr/guide/6_6/morelikethis.html) for 
+an example of the Solr implementation).
+ 
+ | Argument  | Required | Type   | Values                                                                                                                                                                                                                              |
+ |-----------|----------|--------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | `id` | yes      | `String` | The Search API ID of the document to use as source.                                                     |
+ | `fields`     | yes      | `[String]` | A list of fields to be used for the comparison. |
+ 
+### Example 
+Returns all 'article' documents similar to the document with id (nid) 4 based on the study field and article type.
+
+```
+{
+  searchAPISearch(index_id: "index_name", conditions: {name: "node_type", value: "article", operator: "="}, more_like_this: {id: "4", fields: ["article_type_fulltext", "study_field_fulltext"]}) {
+    documents {
+      index_id
+      ... on IndexNameDoc {
+        title
+        body
+      }
+    }
+  }
+}
+```
 
 ## Solr Parameters (Apache Solr Only)
 This special type parameter is only applicable to Apache Solr. It allows us to specify raw Solr query parameters such as

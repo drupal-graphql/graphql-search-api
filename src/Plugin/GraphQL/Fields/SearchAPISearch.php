@@ -26,6 +26,7 @@ use Drupal\search_api\Entity\Index;
  *     "range" = "RangeInput",
  *     "sort" = "SortInput",
  *     "facets" = "[FacetInput]",
+ *     "more_like_this" = "MLTInput",
  *     "solr_params" = "[SolrParameterInput]",
  *   },
  * )
@@ -204,6 +205,25 @@ class SearchAPISearch extends FieldPluginBase {
   }
 
   /**
+   * Sets MLT in the Search API query.
+   *
+   * @facets
+   *  The MLT params to be added to the query.
+   */
+  private function setMLT($mlt_params) {
+
+    // Retrieve this index server details.
+    $server = $this->index->getServerInstance();
+
+    // Check if the index server supports More Like This (e.g solr).
+    if ($server->supportsFeature('search_api_mlt')) {
+
+      // Set the more like this parameters in the query.
+      $this->query->setOption('search_api_mlt', $mlt_params);
+    }
+  }
+
+  /**
    * Prepares the Search API query by adding all possible options.
    *
    * Options include conditions, language, fulltext, range, sort and facets.
@@ -247,6 +267,10 @@ class SearchAPISearch extends FieldPluginBase {
     // Adding facets to the query.
     if ($args['facets']) {
       $this->setFacets($args['facets']);
+    }
+    // Adding more like this parameters to the query.
+    if ($args['more_like_this']) {
+      $this->setMLT($args['more_like_this']);
     }
   }
 
