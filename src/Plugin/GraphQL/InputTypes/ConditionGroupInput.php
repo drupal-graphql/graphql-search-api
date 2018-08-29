@@ -13,6 +13,7 @@ use Drupal\graphql\Plugin\GraphQL\InputTypes\InputTypePluginBase;
  *   fields = {
  *     "conditions" = "[ConditionInput]",
  *     "groups" = "[ConditionGroupInput]",
+ *     "tags" = "[String]",
  *     "conjunction" = {
  *       "type" = "QueryConjunction",
  *       "default" = "AND"
