@@ -95,23 +95,24 @@ class SearchAPISearch extends FieldPluginBase {
    */
   private function addConditionGroup($condition_group_arg) {
 
-    // Set default conjunction.
-    $conjunction = "AND";
-
-    // Set conjunction from args.
-    if ($this->query->createConditionGroup($condition_group_arg['conjunction'])) {
-
-      $conjunction = $condition_group_arg['conjunction'];
-    }
-
-    // Set conjunction condition groups in query.
-    $condition_groups = $this->query->createConditionGroup($conjunction);
-
     // Loop through the groups in the args.
     foreach ($condition_group_arg['groups'] as $group) {
 
+      // Set default conjunction and tags.
+      $group_conjunction = 'AND';
+      $group_tags = array();
+
+      // Set conjunction from args.
+      if ($group['conjunction']) {
+
+        $group_conjunction = $group['conjunction'];
+      }
+      if ($group['tags']) {
+        $group_tags = $group['tags'];
+      }
+
       // Create a single condition group.
-      $condition_group = $this->query->createConditionGroup($group['conjunction']);
+      $condition_group = $this->query->createConditionGroup($group_conjunction, $group_tags);
 
       // Loop through all conditions and add them to the Group.
       foreach ($group['conditions'] as $condition) {
@@ -120,12 +121,8 @@ class SearchAPISearch extends FieldPluginBase {
       }
 
       // Merge the single groups to the condition group.
-      $condition_groups->addConditionGroup($condition_group);
+      $this->query->addConditionGroup($condition_group);
     }
-
-    // Add the condition groups to the query.
-    $this->query->addConditionGroup($condition_groups);
-
   }
 
   /**
