@@ -103,11 +103,11 @@ class SearchAPISearch extends FieldPluginBase {
       $group_tags = array();
 
       // Set conjunction from args.
-      if ($group['conjunction']) {
+      if (isset($group['conjunction'])) {
 
         $group_conjunction = $group['conjunction'];
       }
-      if ($group['tags']) {
+      if (isset($group['tags'])) {
         $group_tags = $group['tags'];
       }
 
@@ -293,10 +293,12 @@ class SearchAPISearch extends FieldPluginBase {
     // Extract facets from the result set.
     $facets = $results->getExtraData('search_api_facets');
 
-    // Loop through each facet in the result set.
-    foreach ($facets as $facet_id => $facet_values) {
-      // Load the response facet in the response array.
-      $search_response['facets'][] = $this->loadResponseFacet($facet_id, $facet_values);
+    if ($facets) {
+      // Loop through each facet in the result set.
+      foreach ($facets as $facet_id => $facet_values) {
+        // Load the response facet in the response array.
+        $search_response['facets'][] = $this->loadResponseFacet($facet_id, $facet_values);
+      }
     }
     return $search_response;
   }
