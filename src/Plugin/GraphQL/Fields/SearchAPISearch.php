@@ -24,7 +24,7 @@ use Drupal\search_api\Entity\Index;
  *     "condition_group" = "ConditionGroupInput",
  *     "conditions" = "[ConditionInput]",
  *     "range" = "RangeInput",
- *     "sort" = "SortInput",
+ *     "sort" = "[SortInput]",
  *     "facets" = "[FacetInput]",
  *     "more_like_this" = "MLTInput",
  *     "solr_params" = "[SolrParameterInput]",
@@ -259,7 +259,9 @@ class SearchAPISearch extends FieldPluginBase {
     }
     // Adding sort parameters to the query.
     if ($args['sort']) {
-      $this->query->sort($args['sort']['field'], $args['sort']['value']);
+      foreach ($args['sort'] as $sort) {
+        $this->query->sort($sort['field'], $sort['value']);
+      }
     }
     // Adding facets to the query.
     if ($args['facets']) {
