@@ -2,6 +2,8 @@
 
 namespace Drupal\graphql_search_api\Plugin\GraphQL\Fields;
 
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\graphql\GraphQL\Cache\CacheableValue;
 use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -65,7 +67,17 @@ class SearchAPISearch extends FieldPluginBase {
     // Set response type.
     $search_response['type'] = 'SearchAPIResult';
 
-    yield $search_response;
+    // Adding Caching.
+    $metadata = new CacheableMetadata();
+    $data_sources = $this->index->getDatasourceIds();
+
+    foreach ($data_sources as $key => $data_source) {
+      $data_sources[$key] = str_replace('entity:', '', $data_source) . '_list';
+    }
+
+    $metadata->addCacheTags($data_sources);
+
+    yield new CacheableValue($search_response, [$metadata]);
 
   }
 
