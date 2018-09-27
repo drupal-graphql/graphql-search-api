@@ -69,13 +69,8 @@ class SearchAPISearch extends FieldPluginBase {
 
     // Adding Caching.
     $metadata = new CacheableMetadata();
-    $data_sources = $this->index->getDatasourceIds();
 
-    foreach ($data_sources as $key => $data_source) {
-      $data_sources[$key] = str_replace('entity:', '', $data_source) . '_list';
-    }
-
-    $metadata->addCacheTags($data_sources);
+    $metadata->addCacheTags(['search_api_list:' . $this->index->id()]);
 
     yield new CacheableValue($search_response, [$metadata]);
 
