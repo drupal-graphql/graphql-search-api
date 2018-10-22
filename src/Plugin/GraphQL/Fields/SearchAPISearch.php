@@ -89,6 +89,9 @@ class SearchAPISearch extends FieldPluginBase {
       if (empty($condition['operator'])) {
         $condition['operator'] = '=';
       }
+      if ($condition['value'] == 'NULL') {
+        $condition['value'] = NULL;
+      }
       // Set the condition in the query.
       $this->query->addCondition($condition['name'], $condition['value'], $condition['operator']);
     }
