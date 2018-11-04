@@ -6,4 +6,3 @@ package: Search
 dependencies:
   - graphql
   - search_api
-  - search_api_solr
