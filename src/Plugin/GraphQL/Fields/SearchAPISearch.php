@@ -162,7 +162,7 @@ class SearchAPISearch extends FieldPluginBase {
     // Check if keys is an array and if so set a conjunction.
     if (is_array($full_text_params['keys'])) {
       // If no conjunction was specified use OR as default.
-      if ($full_text_params['conjunction']) {
+      if (!empty($full_text_params['conjunction'])) {
         $full_text_params['keys']['#conjunction'] = $full_text_params['conjunction'];
       }
       else {
