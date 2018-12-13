@@ -86,6 +86,10 @@ class SearchAPIFieldDeriver extends DeriverBase {
         $this->derivatives[$field_id]['type'] = 'Int';
         break;
 
+      case  'decimal':
+        $this->derivatives[$field_id]['type'] = 'Float';
+        break;
+
       case  'date':
         $this->derivatives[$field_id]['type'] = 'Timestamp';
         break;
