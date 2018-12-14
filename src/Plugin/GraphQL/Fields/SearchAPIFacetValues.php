@@ -23,8 +23,12 @@ class SearchAPIFacetValues extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-    foreach ($value['solrFacetValues'] as $facet_value) {
-      yield $facet_value;
+    $key = 'solrFacetValues';
+
+    if (isset($value[$key])) {
+      foreach ($value[$key] as $facet_value) {
+        yield $facet_value;
+      }
     }
   }
 
