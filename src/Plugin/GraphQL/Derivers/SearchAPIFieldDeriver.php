@@ -3,18 +3,33 @@
 namespace Drupal\graphql_search_api\Plugin\GraphQL\Derivers;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
-use Drupal\search_api\Entity\Index;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\Discovery\ContainerDeriverInterface;
 use Drupal\graphql_search_api\Utility\SearchAPIHelper;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides GraphQL Field plugin definitions for Search API fields.
  */
-class SearchAPIFieldDeriver extends DeriverBase {
+class SearchAPIFieldDeriver extends DeriverBase implements ContainerDeriverInterface {
+
+  /**
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
 
   /**
    * Constructs a new Search API field.
    */
-  public function __construct() {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, $base_plugin_id) {
+    return new static($container->get('entity_type.manager'));
   }
 
   /**
@@ -23,7 +38,7 @@ class SearchAPIFieldDeriver extends DeriverBase {
   public function getDerivativeDefinitions($base_plugin_definition) {
 
     // Loading all existing Search API Indexes.
-    $indexes = Index::loadMultiple();
+    $indexes = $this->entityTypeManager->getStorage('search_api_index')->loadMultiple();
 
     // Initialise generic index_id field using the base plugin definition.
     $this->derivatives['index_id'] = $base_plugin_definition;
