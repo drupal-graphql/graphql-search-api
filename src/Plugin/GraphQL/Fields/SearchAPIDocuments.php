@@ -23,8 +23,10 @@ class SearchAPIDocuments extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-    foreach ($value['SearchAPIDocument'] as $doc) {
-      yield $doc;
+    if (isset($value['SearchAPIDocument'])) {
+      foreach ($value['SearchAPIDocument'] as $doc) {
+        yield $doc;
+      }
     }
   }
 
