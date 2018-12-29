@@ -19,6 +19,9 @@ class SearchAPIDocumentTypeDeriver extends DeriverBase implements ContainerDeriv
 
   /**
    * Constructs a new Search API document type.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
