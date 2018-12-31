@@ -3,11 +3,14 @@
 namespace Drupal\graphql_search_api\Plugin\GraphQL\Fields;
 
 use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\graphql\GraphQL\Cache\CacheableValue;
 use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
 use GraphQL\Type\Definition\ResolveInfo;
-use Drupal\search_api\Entity\Index;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A query field that wraps a Search API query.
@@ -33,10 +36,42 @@ use Drupal\search_api\Entity\Index;
  *   },
  * )
  */
-class SearchAPISearch extends FieldPluginBase {
+class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   */
+  protected $logger;
 
   private $query;
   private $index;
+
+  /**
+   * {@inheritDoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entity_type_manager;
+    $this->logger = $logger;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager'),
+      $container->get('logger.factory')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -44,7 +79,7 @@ class SearchAPISearch extends FieldPluginBase {
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
 
     // Load up the index passed in argument.
-    $this->index = Index::load($args['index_id']);
+    $this->index = $this->entityTypeManager->getStorage('search_api_index')->load($args['index_id']);
 
     // Prepare the query with our arguments.
     $this->prepareSearchQuery($args);
@@ -55,7 +90,7 @@ class SearchAPISearch extends FieldPluginBase {
     }
     // Handle error, check exception type -> SearchApiException ?
     catch (\Exception $exception) {
-      \Drupal::logger('graphql_search_api')->error($exception);
+      $this->logger->get('graphql_search_api')->error($exception->getMessage());
     }
 
     // Get search response from results.
