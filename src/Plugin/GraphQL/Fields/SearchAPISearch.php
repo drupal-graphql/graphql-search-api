@@ -102,13 +102,20 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     // Set response type.
     $search_response['type'] = 'SearchAPIResult';
 
-    // Adding Caching.
+    yield $search_response;
+
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function getCacheDependencies(array $result, $value, array $args, ResolveContext $context, ResolveInfo $info) {
+
     $metadata = new CacheableMetadata();
 
     $metadata->addCacheTags(['search_api_list:' . $this->index->id()]);
 
-    yield new CacheableValue($search_response, [$metadata]);
-
+    return [$metadata];
   }
 
   /**
