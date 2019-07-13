@@ -434,7 +434,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
         }
       }
       // Load the value in the response document.
-      if (!empty($value)) {
+      if (!is_null($value)) {
         $response_document[$field_id] = $value;
       }
     }
