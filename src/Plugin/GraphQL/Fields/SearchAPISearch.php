@@ -404,37 +404,20 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
       $value = NULL;
       $field_values = $field->getValues();
       $field_type = $field->getType();
-      $field_cardinality = count($field_values);
 
       // Fulltext multivalue fields have a different format.
       if ($field_type == 'text') {
-        // Multivalue fields.
-        if ($field_cardinality > 1) {
-          // Create a new array with text values instead of objects.
-          foreach ($field_values as $field_value) {
-            $value[] = $field_value->getText();
-          }
-        }
-        // Singlevalue fields.
-        elseif (!empty($field_values)) {
-          $value = $field_values[0]->getText();
+        // Create a new array with text values instead of objects.
+        foreach ($field_values as $field_value) {
+          $value[] = $field_value->getText();
         }
       }
       // For other types of fields we can just grab contents from the array.
       else {
-        // Multivalue fields.
-        if ($field_cardinality > 1) {
-          $value = $field_values;
-        }
-        // Single value fields.
-        else {
-          if (!empty($field_values)) {
-            $value = $field_values[0];
-          }
-        }
+        $value = $field_values;
       }
       // Load the value in the response document.
-      if (!empty($value)) {
+      if (!is_null($value)) {
         $response_document[$field_id] = $value;
       }
     }
