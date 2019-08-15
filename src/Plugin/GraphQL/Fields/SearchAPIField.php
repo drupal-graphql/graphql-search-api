@@ -26,17 +26,37 @@ class SearchAPIField extends FieldPluginBase {
     $derivative_id = $this->getDerivativeId();
 
     // Not all documents have values for all fields so we need to check.
-    if (isset($value[$derivative_id])) {
+    if (isset($value['item'][$derivative_id])) {
 
-      // Checking if the value of this derivative is a list or single value so
-      // we can parse accordingly.
-      if (is_array($value[$derivative_id])) {
-        foreach ($value[$derivative_id] as $value_item) {
-          yield $value_item;
+      $field = $value['item'][$derivative_id];
+
+      $field_values = $field->getValues();
+      $field_type = $field->getType();
+      $value = NULL;
+
+      // Fulltext multivalue fields have a different format.
+      if ($field_type == 'text') {
+        // Create a new array with text values instead of objects.
+        foreach ($field_values as $field_value) {
+          $value[] = $field_value->getText();
         }
       }
+      // For other types of fields we can just grab contents from the array.
       else {
-        yield $value[$derivative_id];
+        $value = $field_values;
+      }
+      // Load the value in the response document.
+      if (!is_null($value)) {
+        // Checking if the value of this derivative is a list or single value so
+        // we can parse accordingly.
+        if (is_array($value)) {
+          foreach ($value as $value_item) {
+            yield $value_item;
+          }
+        }
+        else {
+          yield $value;
+        }
       }
     }
   }
