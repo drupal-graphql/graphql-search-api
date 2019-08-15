@@ -11,8 +11,8 @@ use Drupal\graphql\Plugin\GraphQL\InputTypes\InputTypePluginBase;
  *   id = "rangeInput",
  *   name = "RangeInput",
  *   fields = {
- *     "start" = "Int!",
- *     "end" = "Int!"
+ *     "offset" = "Int!",
+ *     "limit" = "Int!"
  *   }
  * )
  */
