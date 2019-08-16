@@ -307,7 +307,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     }
     // Adding range parameters to the query (e.g for pagination).
     if ($args['range']) {
-      $this->query->range($args['range']['start'], $args['range']['end']);
+      $this->query->range($args['range']['offset'], $args['range']['limit']);
     }
     // Adding sort parameters to the query.
     if ($args['sort']) {
