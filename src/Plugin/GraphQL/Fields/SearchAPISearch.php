@@ -341,111 +341,20 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     // Loop through each item in the result set.
     foreach ($result_items as $id => &$item) {
       // Load the response document into the search response array.
-      $search_response['SearchAPIDocument'][] = $this->loadResponseDocument($item);
+      $document['item'] = $item->getFields();
+      $document['index_id'] = $this->index->id();;
+      $document['type'] = str_replace("_", "", ucwords($this->index->id() . "Doc", '_'));
+
+      $search_response['SearchAPIDocument'][] = $document;
     }
 
     // Extract facets from the result set.
     $facets = $results->getExtraData('search_api_facets');
 
     if ($facets) {
-      // Loop through each facet in the result set.
-      foreach ($facets as $facet_id => $facet_values) {
-        // Load the response facet in the response array.
-        $search_response['facets'][] = $this->loadResponseFacet($facet_id, $facet_values);
-      }
+      $search_response['facets'] = $facets;
     }
     return $search_response;
-  }
-
-  /**
-   * Loads a Facet into a structured response array.
-   *
-   * @facet_id
-   *  The id of the facet to be added.
-   * @facet_values
-   *  The values for the facet to be added.
-   */
-  private function loadResponseFacet($facet_id, $facet_values) {
-
-    // Initialise variables.
-    $response_facet = [];
-
-    // Config the facet response.
-    $response_facet['type'] = 'SearchAPIFacet';
-    $response_facet['name'] = $facet_id;
-
-    // Loop through the facet values and load them into the response.
-    foreach ($facet_values as $facet_value) {
-      $response_facet_value = [];
-      $response_facet_value['type'] = 'SearchAPIFacetValue';
-      $response_facet_value['filter'] = trim($facet_value['filter'], '"');
-      $response_facet_value['count'] = $facet_value['count'];
-      $response_facet['solrFacetValues'][] = $response_facet_value;
-    }
-
-    return $response_facet;
-  }
-
-  /**
-   * Loads a Document into a structured response array.
-   *
-   * @result_item
-   *  The result item that contains the document information.
-   */
-  private function loadResponseDocument($result_item) {
-
-    // Initialise a response document.
-    $response_document = [];
-
-    // Loop through all fields in the result item.
-    foreach ($result_item->getFields() as $field_id => $field) {
-
-      // Initialise a values.
-      $value = NULL;
-      $field_values = $field->getValues();
-      $field_type = $field->getType();
-      $field_cardinality = count($field_values);
-
-      // Fulltext multivalue fields have a different format.
-      if ($field_type == 'text') {
-        // Multivalue fields.
-        if ($field_cardinality > 1) {
-          // Create a new array with text values instead of objects.
-          foreach ($field_values as $field_value) {
-            $value[] = $field_value->getText();
-          }
-        }
-        // Singlevalue fields.
-        elseif (!empty($field_values)) {
-          $value = $field_values[0]->getText();
-        }
-      }
-      // For other types of fields we can just grab contents from the array.
-      else {
-        // Multivalue fields.
-        if ($field_cardinality > 1) {
-          $value = $field_values;
-        }
-        // Single value fields.
-        else {
-          if (!empty($field_values)) {
-            $value = $field_values[0];
-          }
-        }
-      }
-      // Load the value in the response document.
-      if (!empty($value)) {
-        $response_document[$field_id] = $value;
-      }
-    }
-
-    // Set the index id in the response document.
-    $response_document['index_id'] = $this->index->id();
-
-    // Append the response to the correct index document.
-    $response_document['type'] = str_replace("_", "", ucwords($this->index->id() . "Doc", '_'));
-
-    return $response_document;
   }
 
 }
