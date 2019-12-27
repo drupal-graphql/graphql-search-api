@@ -342,8 +342,11 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     foreach ($result_items as $id => &$item) {
       // Load the response document into the search response array.
       $document['item'] = $item->getFields();
-      $document['index_id'] = $this->index->id();;
+      $document['index_id'] = $this->index->id();
       $document['type'] = str_replace("_", "", ucwords($this->index->id() . "Doc", '_'));
+
+      // Set the relevance score.
+      $document['relevance'] = $item->getScore();
 
       $search_response['SearchAPIDocument'][] = $document;
     }
