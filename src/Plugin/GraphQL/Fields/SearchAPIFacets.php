@@ -27,6 +27,7 @@ class SearchAPIFacets extends FieldPluginBase {
       foreach ($value['facets'] as $facet_id => $facet) {
 
         // Prepare a facet response.
+        $response_facet = NULL;
         $response_facet['type'] = 'SearchAPIFacet';
         $response_facet['name'] = $facet_id;
 
