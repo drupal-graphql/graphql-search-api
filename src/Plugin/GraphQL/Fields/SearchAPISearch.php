@@ -341,7 +341,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     // Loop through each item in the result set.
     foreach ($result_items as $id => &$item) {
       // Load the response document into the search response array.
-      $document['item'] = $item->getFields();
+      $document['item'] = $item;
       $document['index_id'] = $this->index->id();
       $document['type'] = str_replace("_", "", ucwords($this->index->id() . "Doc", '_'));
 

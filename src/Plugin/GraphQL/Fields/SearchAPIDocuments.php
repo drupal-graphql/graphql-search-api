@@ -25,6 +25,7 @@ class SearchAPIDocuments extends FieldPluginBase {
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
     if (isset($value['SearchAPIDocument'])) {
       foreach ($value['SearchAPIDocument'] as $doc) {
+        $doc['item'] = $doc['item']->getFields();
         yield $doc;
       }
     }
