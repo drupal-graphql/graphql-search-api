@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * A Search API GraphQL schema.
+ */
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\graphql_search_api\GraphqlSearchApiPermission;
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function graphql_search_api_search_api_index_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  $access = AccessResult::neutral();
+
+  if ($operation == 'graphql_search_api_query') {
+    $access = AccessResult::allowedIfHasPermission($account, GraphqlSearchApiPermission::getPermissionName($entity));
+  }
+
+  return $access;
+}
