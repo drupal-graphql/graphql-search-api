@@ -2,6 +2,7 @@ name: Graphql Search API
 type: module
 description: A Search API GraphQL schema.
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: Search
 dependencies:
   - graphql
