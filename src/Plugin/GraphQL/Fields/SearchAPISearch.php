@@ -146,6 +146,9 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    *  The conditions to be added.
    */
   private function addConditionGroup($condition_group_arg) {
+    if(empty($condition_group_arg['groups'])) {
+      return;
+    }
 
     // Loop through the groups in the args.
     foreach ($condition_group_arg['groups'] as $group) {
