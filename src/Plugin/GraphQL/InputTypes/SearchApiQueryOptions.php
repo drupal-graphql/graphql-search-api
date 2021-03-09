@@ -13,7 +13,7 @@ use Drupal\graphql\Plugin\GraphQL\InputTypes\InputTypePluginBase;
  *   description =  @Translation("Allow passing Search API query options.
  * For simple string use ""value"" field, for array - use ""json"" field as JSON string"),
  *   fields = {
- *     "key" = "String!",
+ *     "name" = "String!",
  *     "value" = "String",
  *     "json" = "String",
  *   }

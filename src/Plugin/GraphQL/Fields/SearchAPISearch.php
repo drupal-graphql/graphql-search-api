@@ -329,9 +329,9 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
         } elseif($option['value']) {
           $value = $option['value'];
         } else {
-          throw new SearchApiException("Option '{$option['key']}' must have value in 'value' or 'json' argument.");
+          throw new SearchApiException("Option '{$option['name']}' must have value in 'value' or 'json' argument.");
         }
-        $this->query->setOption($option['key'], $value);
+        $this->query->setOption($option['name'], $value);
       }
     }
     // Adding more like this parameters to the query.
