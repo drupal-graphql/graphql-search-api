@@ -14,6 +14,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SearchAPIFieldDeriver extends DeriverBase implements ContainerDeriverInterface {
 
   /**
+   * Entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
@@ -76,13 +78,13 @@ class SearchAPIFieldDeriver extends DeriverBase implements ContainerDeriverInter
    * @field_id
    *   The id of the field to map.
    */
-  private function setFieldType($field, $field_id) {
+  protected function setFieldType($field, $field_id) {
 
     // Get field type.
     $type = $field->getType();
 
     // We can only check if a field is multivalue if it has a Datasource.
-    // @Todo This seems inefficient, check when it's being cached
+    // @todo This seems inefficient, check when it's being cached
     $multivalue = SearchAPIHelper::checkMultivalue($field);
 
     // Map the Search API types to GraphQL.

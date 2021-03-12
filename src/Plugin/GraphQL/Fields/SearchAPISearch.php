@@ -6,7 +6,6 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\graphql\GraphQL\Cache\CacheableValue;
 use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
 use GraphQL\Type\Definition\ResolveInfo;
@@ -39,16 +38,31 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginInterface {
 
   /**
+   * Entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * Logger channel factory.
+   *
    * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $logger;
 
+  /**
+   * Search API query.
+   *
+   * @var \Drupal\search_api\Query\QueryInterface
+   */
   private $query;
+
+  /**
+   * Search API index.
+   *
+   * @var \Drupal\search_api\IndexInterface
+   */
   private $index;
 
   /**
@@ -124,7 +138,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    * @conditions
    *  The conditions to be added.
    */
-  private function addConditions($conditions) {
+  protected function addConditions($conditions) {
 
     // Loop through conditions to add them into the query.
     foreach ($conditions as $condition) {
@@ -145,14 +159,14 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    * @condition_group
    *  The conditions to be added.
    */
-  private function addConditionGroup($condition_group_arg) {
+  protected function addConditionGroup($condition_group_arg) {
 
     // Loop through the groups in the args.
     foreach ($condition_group_arg['groups'] as $group) {
 
       // Set default conjunction and tags.
       $group_conjunction = 'AND';
-      $group_tags = array();
+      $group_tags = [];
 
       // Set conjunction from args.
       if (isset($group['conjunction'])) {
@@ -183,7 +197,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    * @params
    *  The conditions to be added.
    */
-  private function addSolrParams($params) {
+  protected function addSolrParams($params) {
 
     // Loop through conditions to add them into the query.
     foreach ($params as $param) {
@@ -199,7 +213,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    *  Parameters containing fulltext keywords to be used as well as optional
    *  fields.
    */
-  private function setFulltextFields($full_text_params) {
+  protected function setFulltextFields($full_text_params) {
 
     // Check if keys is an array and if so set a conjunction.
     if (is_array($full_text_params['keys'])) {
@@ -227,7 +241,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    * @facets
    *  The facets to be added to the query.
    */
-  private function setFacets($facets) {
+  protected function setFacets($facets) {
 
     // Retrieve this index server details.
     $server = $this->index->getServerInstance();
@@ -259,7 +273,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    * @facets
    *  The MLT params to be added to the query.
    */
-  private function setMLT($mlt_params) {
+  protected function setMLT($mlt_params) {
 
     // Retrieve this index server details.
     $server = $this->index->getServerInstance();
@@ -280,7 +294,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    * @args
    *  The arguments containing all the parameters to be loaded to the query.
    */
-  private function prepareSearchQuery($args) {
+  protected function prepareSearchQuery($args) {
 
     // Prepare a query for the respective Search API index.
     $this->query = $this->index->query();
@@ -331,7 +345,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
    * @results
    *  The Search API results to be parsed.
    */
-  private function getSearchResponse($results) {
+  protected function getSearchResponse($results) {
 
     // Obtain result items.
     $result_items = $results->getResultItems();
