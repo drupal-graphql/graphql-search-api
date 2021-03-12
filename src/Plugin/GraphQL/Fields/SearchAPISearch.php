@@ -38,16 +38,31 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginInterface {
 
   /**
+   * Entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * Logger channel factory.
+   *
    * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $logger;
 
+  /**
+   * Search API query.
+   *
+   * @var \Drupal\search_api\Query\QueryInterface
+   */
   private $query;
+
+  /**
+   * Search API index.
+   *
+   * @var \Drupal\search_api\IndexInterface
+   */
   private $index;
 
   /**
