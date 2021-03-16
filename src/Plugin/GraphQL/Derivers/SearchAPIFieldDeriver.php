@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SearchAPIFieldDeriver extends DeriverBase implements ContainerDeriverInterface {
 
   /**
+   * The entity type manager service.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
