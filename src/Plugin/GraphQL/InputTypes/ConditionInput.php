@@ -12,7 +12,7 @@ use Drupal\graphql\Plugin\GraphQL\InputTypes\InputTypePluginBase;
  *   name = "ConditionInput",
  *   fields = {
  *     "name" = "String!",
- *     "value" = "String!",
+ *     "value" = "String",
  *     "operator" = "String"
  *   }
  * )
