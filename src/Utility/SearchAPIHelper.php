@@ -35,6 +35,9 @@ class SearchAPIHelper {
         $multivalue = TRUE;
       }
     }
+    elseif ($field->getDataDefinition()->isList()) {
+      $multivalue = TRUE;
+    }
 
     return $multivalue;
   }
