@@ -30,7 +30,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "range" = "RangeInput",
  *     "sort" = "[SortInput]",
  *     "facets" = "[FacetInput]",
- *     "spellcheck" = "Boolean",
  *     "more_like_this" = "MLTInput",
  *     "solr_params" = "[SolrParameterInput]",
  *   },
@@ -320,11 +319,6 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     if ($args['fulltext']) {
       $this->setFulltextFields($args['fulltext']);
     }
-    if ($args['spellcheck'] && $args['fulltext']) {
-      $this->query->setOption('search_api_spellcheck', [
-        'keys' => $args['fulltext']['keys'],
-      ]);
-    }
     // Adding range parameters to the query (e.g for pagination).
     if ($args['range']) {
       $this->query->range($args['range']['offset'], $args['range']['limit']);
@@ -377,12 +371,6 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     if ($facets) {
       $search_response['facets'] = $facets;
     }
-
-    $spellcheck = $results->getExtraData('search_api_spellcheck');
-    if ($spellcheck && !empty($spellcheck['suggestions'])) {
-      $search_response['spellcheck'] = $spellcheck['suggestions'];
-    }
-
     return $search_response;
   }
 
