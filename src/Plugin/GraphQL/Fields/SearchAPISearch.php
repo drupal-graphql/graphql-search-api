@@ -95,6 +95,14 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     // Load up the index passed in argument.
     $this->index = $this->entityTypeManager->getStorage('search_api_index')->load($args['index_id']);
 
+    $access = $this->index->access('graphql_search_api_query', NULL, TRUE);
+
+    $resolved_value = new CacheableValue(NULL, [$access]);
+    if (!$access->isAllowed()) {
+      yield $resolved_value;
+      return;
+    }
+
     // Prepare the query with our arguments.
     $this->prepareSearchQuery($args);
 
@@ -116,7 +124,8 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     // Set response type.
     $search_response['type'] = 'SearchAPIResult';
 
-    yield $search_response;
+    $resolved_value->setValue($search_response);
+    yield $resolved_value;
 
   }
 
