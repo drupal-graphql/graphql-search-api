@@ -22,13 +22,13 @@ class SearchAPIField extends FieldPluginBase {
    * {@inheritdoc}
    */
   public function resolveValues($value, array $args, ResolveContext $context, ResolveInfo $info) {
-
     $derivative_id = $this->getDerivativeId();
+    list($parent_type, $field_id) = explode(':', $derivative_id);
 
     // Not all documents have values for all fields so we need to check.
-    if (isset($value['item'][$derivative_id])) {
+    if ($parent_type == $info->parentType && isset($value['item'][$field_id])) {
 
-      $field = $value['item'][$derivative_id];
+      $field = $value['item'][$field_id];
 
       $field_values = $field->getValues();
       $field_type = $field->getType();

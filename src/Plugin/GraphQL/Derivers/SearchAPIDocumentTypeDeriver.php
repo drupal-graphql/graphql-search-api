@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SearchAPIDocumentTypeDeriver extends DeriverBase implements ContainerDeriverInterface {
 
   /**
+   * The entity type manager service.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;

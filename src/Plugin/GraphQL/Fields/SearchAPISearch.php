@@ -6,7 +6,6 @@ use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\graphql\GraphQL\Cache\CacheableValue;
 use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
 use Drupal\search_api\SearchApiException;
@@ -41,16 +40,31 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The entity type manager service.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * The logger service.
+   *
    * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
   protected $logger;
 
+  /**
+   * The query object.
+   *
+   * @var \Drupal\views\Plugin\views\query\QueryPluginBase
+   */
   private $query;
+
+  /**
+   * The search index.
+   *
+   * @var \Drupal\search_api\IndexInterface
+   */
   private $index;
 
   /**
@@ -154,7 +168,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
 
       // Set default conjunction and tags.
       $group_conjunction = 'AND';
-      $group_tags = array();
+      $group_tags = [];
 
       // Set conjunction from args.
       if (isset($group['conjunction'])) {
@@ -258,10 +272,10 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
   /**
    * Sets MLT in the Search API query.
    *
-   * @facets
+   * @mlt_params
    *  The MLT params to be added to the query.
    */
-  private function setMLT($mlt_params) {
+  private function setMlt($mlt_params) {
 
     // Retrieve this index server details.
     $server = $this->index->getServerInstance();
@@ -336,7 +350,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     }
     // Adding more like this parameters to the query.
     if ($args['more_like_this']) {
-      $this->setMLT($args['more_like_this']);
+      $this->setMlt($args['more_like_this']);
     }
   }
 
@@ -354,7 +368,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     $search_response = [];
 
     // Loop through each item in the result set.
-    foreach ($result_items as $id => &$item) {
+    foreach ($result_items as &$item) {
       // Load the response document into the search response array.
       $document['item'] = $item;
       $document['index_id'] = $this->index->id();

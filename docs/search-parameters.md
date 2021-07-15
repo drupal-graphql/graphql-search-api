@@ -103,7 +103,7 @@ evaluated against the search backend.
 |----------|----------|--------|-------------------------------------------------------------------------------------------------------------------------|
 | `operator` | no       | `String` | The operator allows us to specify the evaluation expression. All Search API conditions are supported. Some common examples: `=`, `<>`, `>`, `<`, `>=`, `<=`. |
 | `name`    | yes      | `String` | The name defines what field in the index to be evaluated against this condition.                                       |
-| `value`    | yes      | `String` | The value to be valuated against the specified field and operator.                                                      |                                    |
+| `value`    | no      | `String` | The value to be valuated against the specified field and operator. Leave it empty if you want to compare with NULL                                                      |                                    |
 
 ### Example
 Returns the all results with type of course.
