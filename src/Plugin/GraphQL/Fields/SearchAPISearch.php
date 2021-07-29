@@ -8,6 +8,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
+use Drupal\search_api\SearchApiException;
 use GraphQL\Type\Definition\ResolveInfo;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,6 +32,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "sort" = "[SortInput]",
  *     "facets" = "[FacetInput]",
  *     "more_like_this" = "MLTInput",
+ *     "options" = "[SearchApiQueryOptions]",
  *     "solr_params" = "[SolrParameterInput]",
  *   },
  * )
@@ -332,6 +334,19 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     // Adding facets to the query.
     if ($args['facets']) {
       $this->setFacets($args['facets']);
+    }
+    // Adding options to the query.
+    if ($args['options']) {
+      foreach ($args['options'] as $option) {
+        if($option['json']) {
+          $value = json_decode($option['json'], true);
+        } elseif($option['value']) {
+          $value = $option['value'];
+        } else {
+          throw new SearchApiException("Option '{$option['name']}' must have value in 'value' or 'json' argument.");
+        }
+        $this->query->setOption($option['name'], $value);
+      }
     }
     // Adding more like this parameters to the query.
     if ($args['more_like_this']) {

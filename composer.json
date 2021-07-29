@@ -1,0 +1,11 @@
+{
+  "name": "drupal/graphql_search_api",
+  "type": "drupal-module",
+  "description": "A Search API GraphQL schema.",
+  "homepage": "https://www.drupal.org/project/graphql_search_api",
+  "license": "GPL-2.0+",
+  "require": {
+    "php": ">=7.2"
+  },
+  "minimum-stability": "dev"
+}
