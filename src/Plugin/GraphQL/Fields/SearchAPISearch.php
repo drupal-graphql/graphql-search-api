@@ -185,7 +185,7 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
       // Loop through all conditions and add them to the Group.
       foreach ($group['conditions'] as $condition) {
 
-        $condition_group->addCondition($condition['name'], $condition['value'], $condition['operator']);
+        $condition_group->addCondition($condition['name'], $condition['value'] ?? NULL, $condition['operator'] ?? '=');
       }
 
       // Merge the single groups to the condition group.
