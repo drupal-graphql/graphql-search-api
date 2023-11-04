@@ -8,7 +8,6 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\graphql\Plugin\GraphQL\Fields\FieldPluginBase;
 use Drupal\graphql\GraphQL\Execution\ResolveContext;
-use Drupal\search_api\SearchApiException;
 use GraphQL\Type\Definition\ResolveInfo;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -31,9 +30,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "range" = "RangeInput",
  *     "sort" = "[SortInput]",
  *     "facets" = "[FacetInput]",
- *     "spellcheck" = "Boolean",
  *     "more_like_this" = "MLTInput",
- *     "options" = "[SearchApiQueryOptions]",
  *     "solr_params" = "[SolrParameterInput]",
  *   },
  * )
@@ -322,11 +319,6 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     if ($args['fulltext']) {
       $this->setFulltextFields($args['fulltext']);
     }
-    if ($args['spellcheck'] && $args['fulltext']) {
-      $this->query->setOption('search_api_spellcheck', [
-        'keys' => $args['fulltext']['keys'],
-      ]);
-    }
     // Adding range parameters to the query (e.g for pagination).
     if ($args['range']) {
       $this->query->range($args['range']['offset'], $args['range']['limit']);
@@ -340,19 +332,6 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     // Adding facets to the query.
     if ($args['facets']) {
       $this->setFacets($args['facets']);
-    }
-    // Adding options to the query.
-    if ($args['options']) {
-      foreach ($args['options'] as $option) {
-        if($option['json']) {
-          $value = json_decode($option['json'], true);
-        } elseif($option['value']) {
-          $value = $option['value'];
-        } else {
-          throw new SearchApiException("Option '{$option['name']}' must have value in 'value' or 'json' argument.");
-        }
-        $this->query->setOption($option['name'], $value);
-      }
     }
     // Adding more like this parameters to the query.
     if ($args['more_like_this']) {
@@ -392,12 +371,6 @@ class SearchAPISearch extends FieldPluginBase implements ContainerFactoryPluginI
     if ($facets) {
       $search_response['facets'] = $facets;
     }
-
-    $spellcheck = $results->getExtraData('search_api_spellcheck');
-    if ($spellcheck && !empty($spellcheck['suggestions'])) {
-      $search_response['spellcheck'] = $spellcheck['suggestions'];
-    }
-
     return $search_response;
   }
 
